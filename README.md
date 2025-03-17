@@ -8,7 +8,7 @@ WordPressの設定で管理画面のメニューから設定することがで�
 composer require itmar/wpsetting-class-package
 ```
 ## 収納されている名前空間・クラス
-namespace Itmar\WpSettingPackage;    
+namespace Itmar\WpSettingClassPackage;    
 class ItmarRevisionClass 
 
 
@@ -19,15 +19,17 @@ class ItmarRevisionClass
 
 ## メソッドの機能と引数
 ### 名前空間・クラス
-\Itmar\WpSettingPackage\ItmarRevisionClass
+\Itmar\WpSettingClassPackage\ItmarRevisionClass
 
 ### 説明
 ItmarRevisionClassのインスタンスを次のように呼び出します。
 ```
-\Itmar\WpSettingPackage\ItmarRevisionClass::get_instance();
+\Itmar\WpSettingClassPackage\ItmarRevisionClass::get_instance();
 ```
-すると、次のようなGUIが投稿編集画面のサイドバーに表示されるようになります。
-![image.png](/assets/revision-scsho.png)
+すると、次のようなGUIが投稿編集画面のサイドバーに表示されるようになります。  
+  
+![image.png](/assets/revision-scsho.png)  
+  
 このテキストボックスに数値を入れることで、投稿ごとのリビジョンの最大保存数を設定することができます。
 なお、デフォルトのリビジョンの最大保存数はwp-config.phpに次の記述を行うことでしか設定することはできません。
 ```

@@ -1,6 +1,6 @@
 <?php
 
-namespace Itmar\WpSettingPackage;
+namespace Itmar\WpSettingClassPackage;
 
 //リビジョンの制御
 
