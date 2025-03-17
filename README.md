@@ -27,7 +27,7 @@ ItmarRevisionClassのインスタンスを次のように呼び出します。
 \Itmar\WpSettingPackage\ItmarRevisionClass::get_instance();
 ```
 すると、次のようなGUIが投稿編集画面のサイドバーに表示されるようになります。
-[revision-scsho.png](/assets/revision-scsho.png)
+![image.png](/assets/revision-scsho.png)
 このテキストボックスに数値を入れることで、投稿ごとのリビジョンの最大保存数を設定することができます。
 なお、デフォルトのリビジョンの最大保存数はwp-config.phpに次の記述を行うことでしか設定することはできません。
 ```
