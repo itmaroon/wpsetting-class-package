@@ -1,19 +1,17 @@
 {
-    "name": "itmaroon/wpsetting-class-package",
+    "name": "itmar/wpsetting-class-package",
     "description": "This package contains classes that provide a GUI for configuring various settings in WordPress.",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Itmaroon\\WpsettingClassPackage\\": "src/"
+            "Itmar\\WpsettingClassPackage\\": "src/"
         }
     },
     "authors": [
         {
             "name": "itmaroon",
-            "email": "itmaroon@icloud.com"
+            "email": "master@itmaroon.net"
         }
-    ],
-    "minimum-stability": "dev",
-    "require": {}
+    ]
 }
