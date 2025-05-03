@@ -14,21 +14,28 @@ class ItmarRevisionClass
     // 唯一のインスタンスを保持する静的プロパティ
     private static $instance = null;
 
+    //プライベート変数
     private $current_revision_limit = null;
-
+    private $enabled_option = 'itmar_revision_enabled'; // オプションキー
+    private $enabled = false; // フラグ保持
     /**
      * コンストラクタをプライベートにして外部からのインスタンス化を防ぐ
      */
     private function __construct()
     {
-        // リビジョン数をカスタマイズするフィルター
-        add_filter('wp_revisions_to_keep', array($this, 'customize_revisions_to_keep'), 10, 2);
+        // オプションを確認
+        $this->enabled = get_option($this->enabled_option, 0);
+        // リビジョン制御有効時のみフック
+        if ($this->enabled) {
+            // リビジョン数をカスタマイズするフィルター
+            add_filter('wp_revisions_to_keep', array($this, 'customize_revisions_to_keep'), 10, 2);
 
-        // メタボックスの追加
-        add_action('add_meta_boxes', array($this, 'add_revisions_meta_box'));
+            // メタボックスの追加
+            add_action('add_meta_boxes', array($this, 'add_revisions_meta_box'));
 
-        // 投稿保存時の処理
-        add_action('save_post', array($this, 'save_revisions_meta'));
+            // 投稿保存時の処理
+            add_action('save_post', array($this, 'save_revisions_meta'));
+        }
     }
     // クローンを禁止
     public function __clone() {}
@@ -76,7 +83,7 @@ class ItmarRevisionClass
     {
         add_meta_box(
             'custom_revisions_meta',
-            'リビジョン設定',
+            __("Revision Settings", "wp-extra-settings"),
             array($this, 'render_revisions_meta_box'),
             'post',
             'side',
@@ -100,9 +107,9 @@ class ItmarRevisionClass
         $revision_limit = is_numeric($custom_revisions) ? $custom_revisions : $this->current_revision_limit;
         $revision_limit = $revision_limit == -1 ? "" : $revision_limit;
         // 入力フィールドを表示
-        echo '<label for="custom_revisions_count">この投稿のリビジョン最大数: </label>';
+        echo '<label for="custom_revisions_count">' . __("Maximum number of revisions for this post", "wp-extra-settings") . ' </label>';
         echo '<input type="number" id="custom_revisions_count" name="custom_revisions_count" value="' . esc_attr($revision_limit) . '" min="0" style="width:100%" />';
-        echo '<p class="description">空欄の場合は無制限です。</p>';
+        echo '<p class="description">' . __("If left blank, there is no limit.", "wp-extra-settings") . '</p>';
     }
 
     /**
@@ -131,5 +138,65 @@ class ItmarRevisionClass
         if (isset($_POST['custom_revisions_count'])) {
             update_post_meta($post_id, 'custom_revisions_count', intval($_POST['custom_revisions_count']));
         }
+    }
+
+    /** 設定画面の保存 */
+    public function save_settings()
+    {
+        $enabled = isset($_POST[$this->enabled_option]) ? 1 : 0;
+        update_option($this->enabled_option, $enabled);
+    }
+
+    /** 設定画面の表示 */
+    public function render_settings_section()
+    {
+        $enabled = get_option($this->enabled_option, 0);
+?>
+        <h2><?php _e('Revision Control Settings', 'wp-extra-settings'); ?></h2>
+        <table class="form-table">
+            <tr>
+                <th scope="row"><?php _e('Enable per-post revision limit control', 'wp-extra-settings'); ?></th>
+                <td>
+                    <label>
+                        <input type="checkbox" name="<?php echo esc_attr($this->enabled_option); ?>" value="1" <?php checked($enabled, 1); ?> />
+                        <?php _e('Enable individual post revision limit setting.', 'wp-extra-settings'); ?>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><?php _e('Default Revision Setting', 'wp-extra-settings'); ?></th>
+                <td>
+                    <p class="description">
+                        <?php
+                        // 現在の WordPress デフォルト設定を表示
+                        $revisions_setting = $this->get_default_limit();
+
+                        if ($revisions_setting === true) {
+                            _e('Not set (Unlimited)', 'wp-extra-settings');
+                        } elseif ($revisions_setting === false || $revisions_setting === 0) {
+                            _e('Do not save', 'wp-extra-settings');
+                        } else {
+                            printf(
+                                __('Save up to %d revisions', 'wp-extra-settings'),
+                                esc_html($revisions_setting)
+                            );
+                        }
+                        ?>
+                    </p>
+                </td>
+            </tr>
+        </table>
+<?php
+    }
+
+    /** WPのデフォルトリビジョン設定を取得 */
+    private function get_default_limit()
+    {
+        if (defined('WP_POST_REVISIONS')) {
+            $revisions_setting = constant('WP_POST_REVISIONS');
+        } else {
+            $revisions_setting = true;
+        }
+        return $revisions_setting;
     }
 }

@@ -1,23 +1,47 @@
 # wpsetting-class-package
 
 ## 概要
-WordPressの設定で管理画面のメニューから設定することができないものをGUIで設定できるようにしたものを集めたパッケージです。
+WordPressの設定で管理画面のメニューから設定することができないものをGUIで設定できるようにしたものを集めたパッケージです。  
+このパッケージにおさめられたクラスは全てシングルトンモデルです。newでインスタンスをすることはできません。
+インスタンスはget_instanceメソッドで呼び出してください。
+
 ## インストール
 コマンドプロンプト等から次のように入力してください。
 ```
 composer require itmar/wpsetting-class-package
 ```
 ## 収納されている名前空間・クラス
-namespace Itmar\WpSettingClassPackage;    
+namespace Itmar\WpSettingClassPackage;
+class ItmarRedirectControl      
 class ItmarRevisionClass 
-
+class ItmarModifyPost  
+class ItmarSecuritySettings  
+class ItmarSEOSettings
 
 ## 変更履歴
+
+= 1.1.0 =  
+実用化のためのメジャーバージョンアップ
 
 = 1.0.0 =  
 最初のリリース
 
 ## メソッドの機能と引数
+### 名前空間・クラス
+\Itmar\WpSettingClassPackage\ItmarRedirectControl
+
+### 説明
+ItmarRedirectControlのインスタンスを次のように呼び出します。
+```
+\Itmar\WpSettingClassPackage\ItmarRedirectControl::get_instance();
+```
+その上で、
+```
+\Itmar\WpSettingClassPackage\ItmarRedirectControl::get_instance()->render_settings_section();
+```
+これによってレンダリングされたチェックボックスをチェックすると、サイトにアクセスするためのURLがドメインのルートURLになります。  
+この機能が働くのはWordPressサイトがサブドメインにインストールされた場合だけです。ルートドメインにインストールされている場合はチェックするとエラーになります。  
+
 ### 名前空間・クラス
 \Itmar\WpSettingClassPackage\ItmarRevisionClass
 
