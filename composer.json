@@ -8,6 +8,9 @@
             "Itmar\\WpSettingClassPackage\\": "src/"
         }
     },
+    "require": {
+        "itmar/loader-package": "^1.0"
+    },
     "authors": [
         {
             "name": "itmaroon",
