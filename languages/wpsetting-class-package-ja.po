@@ -1,0 +1,546 @@
+# Copyright (C) 2025 Web Creator ITmaroon
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-09T14:50:07+02:00\n"
+"PO-Revision-Date: 2025-05-09 22:05+0900\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+"X-Domain: wpsetting-class-package\n"
+
+#: src/ItmarDbAction.php:44 src/ItmarDbAction.php:48
+msgid "Skip (unregistered post type)"
+msgstr "スキップ（投稿タイプが登録されていない）"
+
+#: src/ItmarDbAction.php:56
+msgid "Skip (Existing revison data available)"
+msgstr "スキップ（リヴィジョンデータが存在する）"
+
+#: src/ItmarDbAction.php:111
+msgid "Error (update failed)"
+msgstr "エラー（アップデート失敗）"
+
+#: src/ItmarDbAction.php:114
+msgid "Overwrite successful"
+msgstr "上書き成功"
+
+#: src/ItmarDbAction.php:116 src/ItmarDbAction.php:127
+#: src/ItmarDbAction.php:129
+msgid "Addition successful"
+msgstr "追加成功"
+
+#: src/ItmarDbAction.php:124
+msgid "Error (addition failed)"
+msgstr "エラー（追加失敗）"
+
+#: src/ItmarDbAction.php:154 src/ItmarDbAction.php:156
+msgid "Taxonomy: "
+msgstr "タクソノミー:"
+
+#: src/ItmarDbAction.php:156
+msgid "has been registered."
+msgstr "登録済み"
+
+#: src/ItmarDbAction.php:164
+msgid "Custom Field Import:"
+msgstr "カスタムフィールドインポート"
+
+#: src/ItmarDbAction.php:205
+msgid "Custom Field Import(ACF):"
+msgstr "カスタムフィールドインポート(ACF):"
+
+#: src/ItmarDbAction.php:211
+msgid "Custom Field Import(ACF GROUP):"
+msgstr "カスタムフィールドインポート(ACFグループ):"
+
+#: src/ItmarDbAction.php:214
+msgid ": ACF or SCF is not installed"
+msgstr ":ACFまたはSCFが有効化されていません。"
+
+#: src/ItmarDbAction.php:220
+msgid "comment item has been registered."
+msgstr "コメントが登録されました。"
+
+#: src/ItmarDbAction.php:293
+msgid "File not found (file name:"
+msgstr "ファイルが見つかりません。（ファイル名:"
+
+#: src/ItmarDbAction.php:306
+msgid "Processing stopped due to existing file found (media ID:"
+msgstr "既存のファイルが見つかったため処理が停止しました (メディア ID:"
+
+#: src/ItmarDbAction.php:334
+msgid "File uploaded"
+msgstr "ファイルがアップロードされました"
+
+#: src/ItmarDbAction.php:337
+msgid "Failed to upload file"
+msgstr "ファイルのアップロードに失敗しました"
+
+#: src/ItmarDbAction.php:346
+msgid "Upload thumbnail: "
+msgstr "サムネイルのアップロード:"
+
+#: src/ItmarDbAction.php:348
+msgid "Uploading in-content media: "
+msgstr "本文内のメディアのアプロード:"
+
+#: src/ItmarDbAction.php:352
+msgid "Uploading acf media: "
+msgstr "ACFメディアのアップロード:"
+
+#: src/ItmarDbAction.php:381
+msgid "Unregistered Post Types"
+msgstr "登録されていない投稿タイプ"
+
+#: src/ItmarModifyPost.php:240
+msgid "Modify Post Menu Settings"
+msgstr "投稿メニュー変更設定"
+
+#: src/ItmarModifyPost.php:243
+msgid "Post Label Name"
+msgstr "投稿ラベル名"
+
+#: src/ItmarModifyPost.php:247
+msgid "Enable Archive Page"
+msgstr "アーカイブページ使用"
+
+#: src/ItmarModifyPost.php:249
+msgid "Enable archive"
+msgstr "アーカイブ使用可"
+
+#: src/ItmarModifyPost.php:253
+msgid "Archive Slug"
+msgstr "アーカイブスラッグ"
+
+#: src/ItmarModifyPost.php:257
+msgid "Post Supports"
+msgstr "投稿のサポート"
+
+#: src/ItmarRevisionClass.php:86
+msgid "Revision Settings"
+msgstr "リビジョン設定"
+
+#: src/ItmarRevisionClass.php:110
+msgid "Maximum number of revisions for this post"
+msgstr "この投稿の最大リビジョン数"
+
+#: src/ItmarRevisionClass.php:112
+msgid "If left blank, there is no limit."
+msgstr "空白の場合は制限はありません。"
+
+#: src/ItmarSEOSettings.php:218
+msgid "OGP Settings"
+msgstr "OGP設定"
+
+#: src/ItmarSEOSettings.php:221
+msgid "Enable OGP Tags"
+msgstr "OGP タグを有効にする"
+
+#: src/ItmarSEOSettings.php:225
+msgid "Output OGP meta tags in &lt;head&gt; section"
+msgstr "<head> セクションに OGP メタタグを出力する"
+
+#: src/ItmarSEOSettings.php:230
+msgid "Site Name for OGP"
+msgstr "OGP のサイト名"
+
+#: src/ItmarSEOSettings.php:233
+msgid "If empty, the default site title will be used."
+msgstr "空の場合は、デフォルトのサイトタイトルが使用されます。"
+
+#: src/ItmarSEOSettings.php:237
+msgid "Default OGP Image URL"
+msgstr "デフォルトの OGP イメージ URL"
+
+#: src/ItmarSEOSettings.php:240 src/ItmarSEOSettings.php:253
+msgid "Select Image"
+msgstr "画像を選択"
+
+#: src/ItmarSEOSettings.php:246 src/ItmarSEOSettings.php:259
+msgid "Select an image from media library or input URL."
+msgstr "メディアライブラリから画像を選択するか、URLを入力します。"
+
+#: src/ItmarSEOSettings.php:250
+msgid "Square OGP Image URL"
+msgstr "正方形の OGP イメージ URL"
+
+#: src/ItmarSEOSettings.php:263
+msgid "Twitter Card Type"
+msgstr "Twitter カードタイプ"
+
+#: src/ItmarSEOSettings.php:269
+msgid "Select Twitter card type."
+msgstr "Twitter カードの種類を選択します。"
+
+#: src/ItmarSEOSettings.php:275
+msgid "Google SEO Settings"
+msgstr "Google SEO設定"
+
+#: src/ItmarSEOSettings.php:278
+msgid "Google Search Console Setup"
+msgstr "Googleサーチコンソールセットアップ"
+
+#: src/ItmarSEOSettings.php:281
+msgid "Follow the steps below to connect your site with Google Search Console."
+msgstr "以下の手順にしたがって、サイトを Google Search Console に接続します。"
+
+#: src/ItmarSEOSettings.php:286
+msgid "Open Google Search Console"
+msgstr "Googleサーチコンソールを開く"
+
+#: src/ItmarSEOSettings.php:290
+msgid "Click 'Add Property' and choose one of the following types:"
+msgstr "「プロパティを追加」をクリックし、次のいずれかのタイプを選択します。"
+
+#: src/ItmarSEOSettings.php:292
+msgid ""
+"Verifies all subdomains and protocols via DNS (recommended). No further "
+"steps needed here."
+msgstr ""
+"DNS 経由ですべてのサブドメインとプロトコルを検証します (推奨)。これを選択すれ"
+"ばこの項目の設定は不要です。"
+
+#: src/ItmarSEOSettings.php:293
+msgid "Verifies a specific URL (e.g., https://example.com) via HTML tag."
+msgstr "HTML タグを介して特定の URL (例: https://example.com) を検証します。"
+
+#: src/ItmarSEOSettings.php:297
+msgid "Select the verification method you used:"
+msgstr "設定した検証方法を選択してください:"
+
+#: src/ItmarSEOSettings.php:301
+msgid "Domain (via DNS)"
+msgstr "ドメイン"
+
+#: src/ItmarSEOSettings.php:306
+msgid "URL Prefix (via HTML tag)"
+msgstr "URL プレフィックス"
+
+#: src/ItmarSEOSettings.php:313
+msgid "Paste the content value from the HTML tag:"
+msgstr "HTML タグからコンテンツの値を貼り付けます。"
+
+#: src/ItmarSEOSettings.php:317
+msgid "Use the following link to open the settings page:"
+msgstr "設定ページを開くには、次のリンクを使用します。"
+
+#: src/ItmarSEOSettings.php:319
+msgid ""
+"From there, go to 'Ownership verification' → 'HTML tag', and copy the "
+"content value from the tag."
+msgstr ""
+"そこから、「所有権の確認」→「HTML タグ」に進み、タグからコンテンツの値をコ"
+"ピーします。"
+
+#: src/ItmarSEOSettings.php:325
+msgid "Google Analytics (GA4) Setup"
+msgstr "Google アナリティクス（GA4）セットアップ"
+
+#: src/ItmarSEOSettings.php:327
+msgid "If you haven't set up Google Analytics yet, follow the steps below:"
+msgstr ""
+"Google アナリティクス をまだ設定していない場合は、次の手順に従ってください。"
+
+#: src/ItmarSEOSettings.php:332
+msgid "Google Analytics"
+msgstr "Google アナリティクス:"
+
+#: src/ItmarSEOSettings.php:334 src/ItmarSEOSettings.php:382
+msgid "and sign in with your Google account."
+msgstr "Google アカウントでログインします。"
+
+#: src/ItmarSEOSettings.php:335
+msgid "If this is your first time, you'll see a button labeled"
+msgstr "初めての場合は、"
+
+#: src/ItmarSEOSettings.php:336
+msgid "Start Measuring"
+msgstr "測定を開始する"
+
+#: src/ItmarSEOSettings.php:337
+msgid "– click it to begin setup."
+msgstr "– クリックしてセットアップを開始"
+
+#: src/ItmarSEOSettings.php:340
+msgid ""
+"Create a new Analytics account. This is typically your organization or site "
+"name."
+msgstr ""
+"新しい アナリティクスアカウントを作成します。これは通常、組織名またはサイト名"
+"です。"
+
+#: src/ItmarSEOSettings.php:342
+msgid ""
+"Next, create a property (e.g., MyWebsite) and choose your time zone and "
+"currency."
+msgstr ""
+"次に、プロパティ (例: MyWebsite) を作成し、タイムゾーンと通貨を選択します。"
+
+#: src/ItmarSEOSettings.php:344
+msgid "See official setup guide"
+msgstr "公式セットアップガイドを見る"
+
+#: src/ItmarSEOSettings.php:348
+msgid "In the 'Data Streams' step, choose"
+msgstr "「データストリーム」ステップで、"
+
+#: src/ItmarSEOSettings.php:349
+msgid "and enter your site's URL and stream name."
+msgstr "サイトの URL とストリーム名を入力します。"
+
+#: src/ItmarSEOSettings.php:352
+msgid "After setup, your 'Measurement ID' will be shown in this format:"
+msgstr "セットアップ後、「測定 ID」は次の形式で表示されます。"
+
+#: src/ItmarSEOSettings.php:353
+msgid "– copy and paste it below."
+msgstr "– 以下にコピーして貼り付けてください。"
+
+#: src/ItmarSEOSettings.php:358
+msgid "Measurement ID"
+msgstr "測定 ID"
+
+#: src/ItmarSEOSettings.php:367
+msgid "Starts with 'G-', e.g. G-ABC123XYZ"
+msgstr "「G-」で始まる（例：G-ABC123XYZ）"
+
+#: src/ItmarSEOSettings.php:372
+msgid "Google Tag Manager (GTM)"
+msgstr "Google タグマネージャー (GTM)"
+
+#: src/ItmarSEOSettings.php:375
+msgid ""
+"To use Google Tag Manager for managing various tracking codes (Google "
+"Analytics, Ads, etc.), follow the steps below:"
+msgstr ""
+"Google タグ マネージャーを使用してさまざまなトラッキング コード (Google アナ"
+"リティクス、広告など) を管理するには、次の手順に従います。"
+
+#: src/ItmarSEOSettings.php:380
+msgid "Open Google Tag Manager"
+msgstr "Google タグ マネージャーを開く"
+
+#: src/ItmarSEOSettings.php:385
+msgid ""
+"Click 'Create Account', enter your company or site name, select your "
+"country, and choose 'Web' as the target platform."
+msgstr ""
+"「アカウントを作成」をクリックし、会社名またはサイト名を入力し、国を選択し"
+"て、ターゲット プラットフォームとして「Web」を選択します。"
+
+#: src/ItmarSEOSettings.php:388
+msgid "After setup, you’ll get a GTM Container ID that looks like"
+msgstr "設定後、次のようなGTMコンテナIDが取得できます。"
+
+#: src/ItmarSEOSettings.php:389
+msgid "Paste it below."
+msgstr "以下に貼り付けてください。"
+
+#: src/ItmarSEOSettings.php:394
+msgid "GTM Container ID"
+msgstr "GTM コンテナ ID"
+
+#: src/ItmarSEOSettings.php:402
+msgid "Example: GTM-ABC123X"
+msgstr "例: GTM-ABC123X"
+
+#: src/ItmarSEOSettings.php:409
+msgid ""
+"Also output the noscript GTM code after the opening &lt;body&gt; tag "
+"(recommended)"
+msgstr "開始の <body> タグの後に noscript GTM コードも出力します (推奨)"
+
+#: src/ItmarSEOSettings.php:414
+msgid "Noindex Settings by Page Type"
+msgstr "ページタイプ別Noindex 設定"
+
+#: src/ItmarSEOSettings.php:419
+msgid "Noindex on search result pages (?s=...)"
+msgstr "検索結果ページを noindex (?s=...)"
+
+#: src/ItmarSEOSettings.php:425
+msgid "Noindex on archive pages (category, tag, date)"
+msgstr "アーカイブページ（カテゴリ、タグ、日付）を Noindex"
+
+#: src/ItmarSEOSettings.php:431
+msgid "Noindex on 404 not found pages"
+msgstr "404 ページを noindex"
+
+#: src/ItmarSEOSettings.php:435
+msgid "Prevents selected types of pages from being indexed by search engines."
+msgstr ""
+"選択した種類のページが検索エンジンによってインデックスされないようにします。"
+
+#~ msgid ""
+#~ "It provides a function that allows you to configure settings that are not "
+#~ "provided in the WordPress admin screen using a GUI."
+#~ msgstr ""
+#~ "WordPressの管理画面では提供されていない設定をGUIで行える機能を提供します。"
+
+#~ msgid "Web Creator ITmaroon"
+#~ msgstr "WebクリエイターITmaroon"
+
+#~ msgid "Posts"
+#~ msgstr "投稿"
+
+#~ msgid "Unauthorized user"
+#~ msgstr "認証されていないユーザーです。"
+
+#~ msgid "Your settings saved"
+#~ msgstr "設定が保存されました。"
+
+#~ msgid "General"
+#~ msgstr "全般"
+
+#~ msgid "SEO"
+#~ msgstr "SEO"
+
+#~ msgid "Security"
+#~ msgstr "セキュリティ"
+
+#~ msgid "Save Settings"
+#~ msgstr "設定を保存"
+
+#~ msgid "Title"
+#~ msgstr "タイトル"
+
+#~ msgid "Editor"
+#~ msgstr "エディター"
+
+#~ msgid "Author"
+#~ msgstr "著者"
+
+#~ msgid "Excerpt"
+#~ msgstr "抜粋"
+
+#~ msgid "Trackbacks(Deprecated)"
+#~ msgstr "トラックバック（非推奨）"
+
+#~ msgid "Comments"
+#~ msgstr "コメント"
+
+#~ msgid "Revisions"
+#~ msgstr "リビジョン"
+
+#~ msgid "Post Formats(Deprecated)"
+#~ msgstr "投稿フォーマット（非推奨）"
+
+#~ msgid "Featured Image"
+#~ msgstr "アイキャッチ画像"
+
+#~ msgid "Redirect Settings"
+#~ msgstr "リダイレクト設定"
+
+#~ msgid "Redirecting from the domain root URL"
+#~ msgstr "ドメインルートURLからリダイレクト"
+
+#~ msgid "Redirect the domain root URL to this site"
+#~ msgstr ""
+#~ "ドメイン ルート URL からこのサイトのサブディレクトリへのリダイレクトを有効"
+#~ "にします。"
+
+#~ msgid ""
+#~ "If this site is installed on a subdomain, it will be accessible at the "
+#~ "root domain URL."
+#~ msgstr ""
+#~ "このサイトがサブドメインにインストールされている場合は、ルートドメイン "
+#~ "URL でアクセスできます。"
+
+#~ msgid ""
+#~ "Failed to create index.php. The file already exists or insufficient "
+#~ "permissions. Please remove index.php manually if you want to enable "
+#~ "redirect."
+#~ msgstr ""
+#~ "index.php の作成に失敗しました。ファイルが既に存在するか、権限が不十分で"
+#~ "す。リダイレクトを有効にする場合は、index.php を手動で削除してください。"
+
+#~ msgid "Revision Control Settings"
+#~ msgstr "リビジョン管理設定"
+
+#~ msgid "Enable per-post revision limit control"
+#~ msgstr "投稿ごとのリビジョン制限制御を有効にする"
+
+#~ msgid "Enable individual post revision limit setting."
+#~ msgstr "個別の投稿のリビジョン制限設定を有効にします。"
+
+#~ msgid "Default Revision Setting"
+#~ msgstr "デフォルトのリビジョン設定"
+
+#~ msgid "Not set (Unlimited)"
+#~ msgstr "未設定（無制限）"
+
+#~ msgid "Do not save"
+#~ msgstr "保存しない"
+
+#~ msgid "Save up to %d revisions"
+#~ msgstr "最大 %d のリビジョンを保存"
+
+#~ msgid "404 Not Found"
+#~ msgstr "404 Not Found"
+
+#~ msgid "Security Settings"
+#~ msgstr "セキュリティ設定"
+
+#~ msgid "Custom Login URL"
+#~ msgstr "カスタムログインURL"
+
+#~ msgid "Change the default login URL (wp-login.php)."
+#~ msgstr "デフォルトのログイン URL (wp-login.php) を変更します。"
+
+#~ msgid "Disable Author Archives & REST API User Endpoint"
+#~ msgstr "著者アーカイブとREST APIユーザーエンドポイントを無効にする"
+
+#~ msgid "Block access to /?author= and REST API /wp/v2/users."
+#~ msgstr ""
+#~ "/?author= および REST API /wp/v2/users へのアクセスをブロックします。"
+
+#~ msgid "Disable XML-RPC"
+#~ msgstr "XML-RPCを無効にする"
+
+#~ msgid ""
+#~ "Disable XML-RPC endpoint (used for pingbacks, remote publishing, etc)."
+#~ msgstr ""
+#~ "XML-RPC エンドポイントを無効にします (pingback、リモート公開などに使用され"
+#~ "ます)。"
+
+#~ msgid "Custom Header Code"
+#~ msgstr "カスタムヘッダーコード"
+
+#~ msgid "Insert meta tags, verification codes, or tracking scripts."
+#~ msgstr "メタタグ、検証コード、またはトラッキング スクリプトを挿入します。"
+
+#~ msgid "Access here"
+#~ msgstr "ここからアクセス"
+
+#~ msgid "Go to property settings → Get verification HTML tag."
+#~ msgstr "プロパティ設定に移動 → 検証 HTML タグを取得します。"
+
+#~ msgid "Admin → Data Streams → Web → Get tag code."
+#~ msgstr "管理 → データ ストリーム → Web → タグ コードを取得。"
+
+#~ msgid "Show Example Codes"
+#~ msgstr "サンプルコードを表示"
+
+#~ msgid "Example:"
+#~ msgstr "例:"
+
+#~ msgid "Enable Redirect from Root to Subdirectory"
+#~ msgstr "ルートからサブディレクトリへのリダイレクトを有効にする"
+
+#~ msgid "Target Subdirectory (Slug)"
+#~ msgstr "ターゲットサブディレクトリ（スラッグ）"
+
+#~ msgid ""
+#~ "Example: If your WordPress is installed in https://example.com/home/, "
+#~ "enter \"home\"."
+#~ msgstr ""
+#~ "例: WordPress が https://example.com/home/ にインストールされている場合"
+#~ "は、「home」と入力します。"

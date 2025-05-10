@@ -237,24 +237,24 @@ class ItmarModifyPost
             }
         }
 ?>
-        <h2><?php echo __("Modify Post Menu Settings", "wp-extra-settings"); ?></h2>
+        <h2><?php echo __("Modify Post Menu Settings", "wpsetting-class-package"); ?></h2>
         <table class="form-table">
             <tr>
-                <th scope="row"><?php echo __("Post Label Name", "wp-extra-settings"); ?></th>
+                <th scope="row"><?php echo __("Post Label Name", "wpsetting-class-package"); ?></th>
                 <td><input type="text" name="itmar_post_label" value="<?php echo esc_attr($post_label); ?>" class="regular-text" /></td>
             </tr>
             <tr>
-                <th scope="row"><?php echo __("Enable Archive Page", "wp-extra-settings"); ?></th>
+                <th scope="row"><?php echo __("Enable Archive Page", "wpsetting-class-package"); ?></th>
                 <td>
-                    <label><input type="checkbox" name="itmar_post_has_archive" value="1" <?php checked(1, $has_archive); ?> /><?php echo __("Enable archive", "wp-extra-settings"); ?></label>
+                    <label><input type="checkbox" name="itmar_post_has_archive" value="1" <?php checked(1, $has_archive); ?> /><?php echo __("Enable archive", "wpsetting-class-package"); ?></label>
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?php echo __("Archive Slug", "wp-extra-settings"); ?></th>
+                <th scope="row"><?php echo __("Archive Slug", "wpsetting-class-package"); ?></th>
                 <td><input type="text" name="itmar_post_archive_slug" value="<?php echo esc_attr($archive_slug); ?>" class="regular-text" /></td>
             </tr>
             <tr>
-                <th scope="row"><?php echo __("Post Supports", "wp-extra-settings"); ?></th>
+                <th scope="row"><?php echo __("Post Supports", "wpsetting-class-package"); ?></th>
                 <td>
                     <div class="post-supports-wrapper">
                         <?php foreach ($support_options as $key => $label): ?>

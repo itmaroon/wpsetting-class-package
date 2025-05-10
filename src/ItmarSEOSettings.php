@@ -215,147 +215,147 @@ class ItmarSEOSettings
     public function render_settings_section()
     {
     ?>
-        <h2><?php echo __("OGP Settings", "wp-extra-settings"); ?></h2>
+        <h2><?php echo __("OGP Settings", "wpsetting-class-package"); ?></h2>
         <table class="form-table">
             <tr valign="top">
-                <th scope="row"><?php echo __("Enable OGP Tags", "wp-extra-settings"); ?></th>
+                <th scope="row"><?php echo __("Enable OGP Tags", "wpsetting-class-package"); ?></th>
                 <td>
                     <label>
                         <input type="checkbox" name="itmar_ogp_enabled" value="1" <?php checked(1, get_option('itmar_ogp_enabled', 0)); ?> />
-                        <?php echo __("Output OGP meta tags in &lt;head&gt; section", "wp-extra-settings"); ?>
+                        <?php echo __("Output OGP meta tags in &lt;head&gt; section", "wpsetting-class-package"); ?>
                     </label>
                 </td>
             </tr>
             <tr valign="top">
-                <th scope="row"><?php echo __("Site Name for OGP", "wp-extra-settings"); ?></th>
+                <th scope="row"><?php echo __("Site Name for OGP", "wpsetting-class-package"); ?></th>
                 <td>
                     <input type="text" name="itmar_ogp_site_name" value="<?php echo esc_attr(get_option('itmar_ogp_site_name', get_bloginfo('name'))); ?>" class="regular-text" />
-                    <p class="description"><?php echo __("If empty, the default site title will be used.", "wp-extra-settings"); ?></p>
+                    <p class="description"><?php echo __("If empty, the default site title will be used.", "wpsetting-class-package"); ?></p>
                 </td>
             </tr>
             <tr valign="top">
-                <th scope="row"><?php echo __("Default OGP Image URL", "wp-extra-settings"); ?></th>
+                <th scope="row"><?php echo __("Default OGP Image URL", "wpsetting-class-package"); ?></th>
                 <td>
                     <input type="text" id="itmar_ogp_default_image" name="itmar_ogp_default_image" value="<?php echo esc_url(get_option('itmar_ogp_default_image', '')); ?>" class="regular-text" />
-                    <input type="button" class="button" id="itmar_ogp_default_image_button" value="<?php echo __("Select Image", "wp-extra-settings"); ?>" />
+                    <input type="button" class="button" id="itmar_ogp_default_image_button" value="<?php echo __("Select Image", "wpsetting-class-package"); ?>" />
                     <div id="itmar_ogp_default_image_preview" style="margin-top:10px;">
                         <?php if ($img = esc_url(get_option('itmar_ogp_default_image', ''))): ?>
                             <img src="<?php echo $img; ?>" style="max-width:150px; height:auto;" />
                         <?php endif; ?>
                     </div>
-                    <p class="description"><?php echo __("Select an image from media library or input URL.", "wp-extra-settings"); ?></p>
+                    <p class="description"><?php echo __("Select an image from media library or input URL.", "wpsetting-class-package"); ?></p>
                 </td>
             </tr>
             <tr valign="top">
-                <th scope="row"><?php echo __("Square OGP Image URL", "wp-extra-settings"); ?></th>
+                <th scope="row"><?php echo __("Square OGP Image URL", "wpsetting-class-package"); ?></th>
                 <td>
                     <input type="text" id="itmar_ogp_square_image" name="itmar_ogp_square_image" value="<?php echo esc_url(get_option('itmar_ogp_square_image', '')); ?>" class="regular-text" />
-                    <input type="button" class="button" id="itmar_ogp_square_image_button" value="<?php echo __("Select Image", "wp-extra-settings"); ?>" />
+                    <input type="button" class="button" id="itmar_ogp_square_image_button" value="<?php echo __("Select Image", "wpsetting-class-package"); ?>" />
                     <div id="itmar_ogp_square_image_preview" style="margin-top:10px;">
                         <?php if ($img = esc_url(get_option('itmar_ogp_square_image', ''))): ?>
                             <img src="<?php echo $img; ?>" style="max-width:150px; height:auto;" />
                         <?php endif; ?>
                     </div>
-                    <p class="description"><?php echo __("Select an image from media library or input URL.", "wp-extra-settings"); ?></p>
+                    <p class="description"><?php echo __("Select an image from media library or input URL.", "wpsetting-class-package"); ?></p>
                 </td>
             </tr>
             <tr valign="top">
-                <th scope="row"><?php echo __("Twitter Card Type", "wp-extra-settings"); ?></th>
+                <th scope="row"><?php echo __("Twitter Card Type", "wpsetting-class-package"); ?></th>
                 <td>
                     <select name="itmar_ogp_twitter_card">
                         <option value="summary" <?php selected('summary', get_option('itmar_ogp_twitter_card', 'summary')); ?>>summary</option>
                         <option value="summary_large_image" <?php selected('summary_large_image', get_option('itmar_ogp_twitter_card', 'summary')); ?>>summary_large_image</option>
                     </select>
-                    <p class="description"><?php echo __("Select Twitter card type.", "wp-extra-settings"); ?></p>
+                    <p class="description"><?php echo __("Select Twitter card type.", "wpsetting-class-package"); ?></p>
                 </td>
             </tr>
 
         </table>
 
-        <h2><?php echo __("Google SEO Settings", "wp-extra-settings"); ?></h2>
+        <h2><?php echo __("Google SEO Settings", "wpsetting-class-package"); ?></h2>
         <table class="form-table">
             <tr valign="top">
-                <th scope="row"><?php echo __("Google Search Console Setup", "wp-extra-settings"); ?></th>
+                <th scope="row"><?php echo __("Google Search Console Setup", "wpsetting-class-package"); ?></th>
                 <td>
                     <p>
-                        <?php echo __("Follow the steps below to connect your site with Google Search Console.", "wp-extra-settings"); ?>
+                        <?php echo __("Follow the steps below to connect your site with Google Search Console.", "wpsetting-class-package"); ?>
                     </p>
                     <ol style="margin-left:20px;">
                         <li>
                             <a href="https://search.google.com/search-console/welcome" target="_blank">
-                                <?php echo __("Open Google Search Console", "wp-extra-settings"); ?>
+                                <?php echo __("Open Google Search Console", "wpsetting-class-package"); ?>
                             </a>
                         </li>
                         <li>
-                            <?php echo __("Click 'Add Property' and choose one of the following types:", "wp-extra-settings"); ?>
+                            <?php echo __("Click 'Add Property' and choose one of the following types:", "wpsetting-class-package"); ?>
                             <ul style="margin-left:20px;">
-                                <li><strong><?php echo __("Domain"); ?></strong> – <?php echo __("Verifies all subdomains and protocols via DNS (recommended). No further steps needed here.", "wp-extra-settings"); ?></li>
-                                <li><strong><?php echo __("URL Prefix"); ?></strong> – <?php echo __("Verifies a specific URL (e.g., https://example.com) via HTML tag.", "wp-extra-settings"); ?></li>
+                                <li><strong><?php echo __("Domain"); ?></strong> – <?php echo __("Verifies all subdomains and protocols via DNS (recommended). No further steps needed here.", "wpsetting-class-package"); ?></li>
+                                <li><strong><?php echo __("URL Prefix"); ?></strong> – <?php echo __("Verifies a specific URL (e.g., https://example.com) via HTML tag.", "wpsetting-class-package"); ?></li>
                             </ul>
                         </li>
                         <li>
-                            <?php echo __("Select the verification method you used:", "wp-extra-settings"); ?><br>
+                            <?php echo __("Select the verification method you used:", "wpsetting-class-package"); ?><br>
                             <label>
                                 <input type="radio" name="<?php echo esc_attr($this->gsc_property_type); ?>" value="domain"
                                     <?php checked(get_option($this->gsc_property_type), 'domain'); ?> />
-                                <?php echo __("Domain (via DNS)", "wp-extra-settings"); ?>
+                                <?php echo __("Domain (via DNS)", "wpsetting-class-package"); ?>
                             </label><br>
                             <label>
                                 <input type="radio" name="<?php echo esc_attr($this->gsc_property_type); ?>" value="prefix"
                                     <?php checked(get_option($this->gsc_property_type), 'prefix'); ?> />
-                                <?php echo __("URL Prefix (via HTML tag)", "wp-extra-settings"); ?>
+                                <?php echo __("URL Prefix (via HTML tag)", "wpsetting-class-package"); ?>
                             </label>
                         </li>
                     </ol>
 
                     <div id="itmar_gsc_html_tag_input" style="margin-top:10px; display: <?php echo get_option($this->gsc_property_type) === 'prefix' ? 'block' : 'none'; ?>;">
                         <label for="<?php echo esc_attr($this->google_verification); ?>">
-                            <?php echo __("Paste the content value from the HTML tag:", "wp-extra-settings"); ?>
+                            <?php echo __("Paste the content value from the HTML tag:", "wpsetting-class-package"); ?>
                         </label><br>
                         <input type="text" name="<?php echo esc_attr($this->google_verification); ?>" id="<?php echo esc_attr($this->google_verification); ?>" class="regular-text" value="<?php echo esc_attr(get_option($this->google_verification, '')); ?>" />
                         <p class="description">
-                            <?php echo __("Use the following link to open the settings page:", "wp-extra-settings"); ?><br>
+                            <?php echo __("Use the following link to open the settings page:", "wpsetting-class-package"); ?><br>
                             <a href="https://search.google.com/search-console/settings" target="_blank">https://search.google.com/search-console/settings</a><br>
-                            <?php echo __("From there, go to 'Ownership verification' → 'HTML tag', and copy the content value from the tag.", "wp-extra-settings"); ?>
+                            <?php echo __("From there, go to 'Ownership verification' → 'HTML tag', and copy the content value from the tag.", "wpsetting-class-package"); ?>
                         </p>
                     </div>
                 </td>
             </tr>
             <tr valign="top">
-                <th scope="row"><?php echo __("Google Analytics (GA4) Setup", "wp-extra-settings"); ?></th>
+                <th scope="row"><?php echo __("Google Analytics (GA4) Setup", "wpsetting-class-package"); ?></th>
                 <td>
-                    <p><?php echo __("If you haven't set up Google Analytics yet, follow the steps below:", "wp-extra-settings"); ?></p>
+                    <p><?php echo __("If you haven't set up Google Analytics yet, follow the steps below:", "wpsetting-class-package"); ?></p>
                     <ol style="margin-left:20px;">
                         <li>
                             <?php echo __("Go to"); ?>
                             <a href="https://analytics.google.com/analytics/web/" target="_blank">
-                                <?php echo __("Google Analytics", "wp-extra-settings"); ?>
+                                <?php echo __("Google Analytics", "wpsetting-class-package"); ?>
                             </a>
-                            <?php echo __("and sign in with your Google account.", "wp-extra-settings"); ?><br>
-                            <?php echo __("If this is your first time, you'll see a button labeled", "wp-extra-settings"); ?>
-                            <strong><?php echo __("Start Measuring", "wp-extra-settings"); ?></strong>
-                            <?php echo __("– click it to begin setup.", "wp-extra-settings"); ?>
+                            <?php echo __("and sign in with your Google account.", "wpsetting-class-package"); ?><br>
+                            <?php echo __("If this is your first time, you'll see a button labeled", "wpsetting-class-package"); ?>
+                            <strong><?php echo __("Start Measuring", "wpsetting-class-package"); ?></strong>
+                            <?php echo __("– click it to begin setup.", "wpsetting-class-package"); ?>
                         </li>
                         <li>
-                            <?php echo __("Create a new Analytics account. This is typically your organization or site name.", "wp-extra-settings"); ?>
+                            <?php echo __("Create a new Analytics account. This is typically your organization or site name.", "wpsetting-class-package"); ?>
                             <br />
-                            <?php echo __("Next, create a property (e.g., MyWebsite) and choose your time zone and currency.", "wp-extra-settings"); ?>
+                            <?php echo __("Next, create a property (e.g., MyWebsite) and choose your time zone and currency.", "wpsetting-class-package"); ?>
                             (<a href="https://support.google.com/analytics/answer/9304153?hl=ja" target="_blank">
-                                <?php echo __("See official setup guide", "wp-extra-settings"); ?>
+                                <?php echo __("See official setup guide", "wpsetting-class-package"); ?>
                             </a>)
                         </li>
                         <li>
-                            <?php echo __("In the 'Data Streams' step, choose", "wp-extra-settings"); ?> <strong><?php echo __("Web"); ?></strong>
-                            <?php echo __("and enter your site's URL and stream name.", "wp-extra-settings"); ?>
+                            <?php echo __("In the 'Data Streams' step, choose", "wpsetting-class-package"); ?> <strong><?php echo __("Web"); ?></strong>
+                            <?php echo __("and enter your site's URL and stream name.", "wpsetting-class-package"); ?>
                         </li>
                         <li>
-                            <?php echo __("After setup, your 'Measurement ID' will be shown in this format:", "wp-extra-settings"); ?> <code>G-XXXXXXXXXX</code>
-                            <?php echo __("– copy and paste it below.", "wp-extra-settings"); ?>
+                            <?php echo __("After setup, your 'Measurement ID' will be shown in this format:", "wpsetting-class-package"); ?> <code>G-XXXXXXXXXX</code>
+                            <?php echo __("– copy and paste it below.", "wpsetting-class-package"); ?>
                         </li>
                     </ol>
 
                     <label for="<?php echo esc_attr($this->ga_measurement_id); ?>">
-                        <?php echo __("Measurement ID", "wp-extra-settings"); ?>
+                        <?php echo __("Measurement ID", "wpsetting-class-package"); ?>
                     </label><br>
                     <input type="text"
                         name="<?php echo esc_attr($this->ga_measurement_id); ?>"
@@ -364,34 +364,34 @@ class ItmarSEOSettings
                         value="<?php echo esc_attr(get_option($this->ga_measurement_id, '')); ?>"
                         placeholder="G-XXXXXXXXXX" />
                     <p class="description">
-                        <?php echo __("Starts with 'G-', e.g. G-ABC123XYZ", "wp-extra-settings"); ?>
+                        <?php echo __("Starts with 'G-', e.g. G-ABC123XYZ", "wpsetting-class-package"); ?>
                     </p>
                 </td>
             </tr>
             <tr valign="top">
-                <th scope="row"><?php echo __("Google Tag Manager (GTM)", "wp-extra-settings"); ?></th>
+                <th scope="row"><?php echo __("Google Tag Manager (GTM)", "wpsetting-class-package"); ?></th>
                 <td>
                     <p>
-                        <?php echo __("To use Google Tag Manager for managing various tracking codes (Google Analytics, Ads, etc.), follow the steps below:", "wp-extra-settings"); ?>
+                        <?php echo __("To use Google Tag Manager for managing various tracking codes (Google Analytics, Ads, etc.), follow the steps below:", "wpsetting-class-package"); ?>
                     </p>
                     <ol style="margin-left:20px;">
                         <li>
                             <a href="https://tagmanager.google.com/" target="_blank">
-                                <?php echo __("Open Google Tag Manager", "wp-extra-settings"); ?>
+                                <?php echo __("Open Google Tag Manager", "wpsetting-class-package"); ?>
                             </a>
-                            <?php echo __("and sign in with your Google account.", "wp-extra-settings"); ?>
+                            <?php echo __("and sign in with your Google account.", "wpsetting-class-package"); ?>
                         </li>
                         <li>
-                            <?php echo __("Click 'Create Account', enter your company or site name, select your country, and choose 'Web' as the target platform.", "wp-extra-settings"); ?>
+                            <?php echo __("Click 'Create Account', enter your company or site name, select your country, and choose 'Web' as the target platform.", "wpsetting-class-package"); ?>
                         </li>
                         <li>
-                            <?php echo __("After setup, you’ll get a GTM Container ID that looks like", "wp-extra-settings"); ?> <code>GTM-XXXXXXX</code>.
-                            <?php echo __("Paste it below.", "wp-extra-settings"); ?>
+                            <?php echo __("After setup, you’ll get a GTM Container ID that looks like", "wpsetting-class-package"); ?> <code>GTM-XXXXXXX</code>.
+                            <?php echo __("Paste it below.", "wpsetting-class-package"); ?>
                         </li>
                     </ol>
 
                     <label for="<?php echo esc_attr($this->gtm_container_id); ?>">
-                        <?php echo __("GTM Container ID", "wp-extra-settings"); ?>
+                        <?php echo __("GTM Container ID", "wpsetting-class-package"); ?>
                     </label><br>
                     <input type="text"
                         name="<?php echo esc_attr($this->gtm_container_id); ?>"
@@ -399,40 +399,40 @@ class ItmarSEOSettings
                         class="regular-text"
                         value="<?php echo esc_attr(get_option($this->gtm_container_id, '')); ?>"
                         placeholder="GTM-XXXXXXX" />
-                    <p class="description"><?php echo __("Example: GTM-ABC123X", "wp-extra-settings"); ?></p>
+                    <p class="description"><?php echo __("Example: GTM-ABC123X", "wpsetting-class-package"); ?></p>
 
                     <label>
                         <input type="checkbox"
                             name="<?php echo esc_attr($this->gtm_output_body); ?>"
                             value="1"
                             <?php checked(get_option($this->gtm_output_body), 1); ?> />
-                        <?php echo __("Also output the noscript GTM code after the opening &lt;body&gt; tag (recommended)", "wp-extra-settings"); ?>
+                        <?php echo __("Also output the noscript GTM code after the opening &lt;body&gt; tag (recommended)", "wpsetting-class-package"); ?>
                     </label>
                 </td>
             </tr>
             <tr valign="top">
-                <th scope="row"><?php echo __("Noindex Settings by Page Type", "wp-extra-settings"); ?></th>
+                <th scope="row"><?php echo __("Noindex Settings by Page Type", "wpsetting-class-package"); ?></th>
                 <td>
                     <label>
                         <input type="checkbox" name="<?php echo esc_attr($this->noindex_search); ?>" value="1"
                             <?php checked(get_option($this->noindex_search), 1); ?> />
-                        <?php echo __("Noindex on search result pages (?s=...)", "wp-extra-settings"); ?>
+                        <?php echo __("Noindex on search result pages (?s=...)", "wpsetting-class-package"); ?>
                     </label><br>
 
                     <label>
                         <input type="checkbox" name="<?php echo esc_attr($this->noindex_archive); ?>" value="1"
                             <?php checked(get_option($this->noindex_archive), 1); ?> />
-                        <?php echo __("Noindex on archive pages (category, tag, date)", "wp-extra-settings"); ?>
+                        <?php echo __("Noindex on archive pages (category, tag, date)", "wpsetting-class-package"); ?>
                     </label><br>
 
                     <label>
                         <input type="checkbox" name="<?php echo esc_attr($this->noindex_404); ?>" value="1"
                             <?php checked(get_option($this->noindex_404), 1); ?> />
-                        <?php echo __("Noindex on 404 not found pages", "wp-extra-settings"); ?>
+                        <?php echo __("Noindex on 404 not found pages", "wpsetting-class-package"); ?>
                     </label>
 
                     <p class="description">
-                        <?php echo __("Prevents selected types of pages from being indexed by search engines.", "wp-extra-settings"); ?>
+                        <?php echo __("Prevents selected types of pages from being indexed by search engines.", "wpsetting-class-package"); ?>
                     </p>
                 </td>
             </tr>

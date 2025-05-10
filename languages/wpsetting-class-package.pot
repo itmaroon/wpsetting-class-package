@@ -1,0 +1,356 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-05-09T14:50:07+02:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: wpsetting-class-package\n"
+
+#: src/ItmarDbAction.php:44
+#: src/ItmarDbAction.php:48
+msgid "Skip (unregistered post type)"
+msgstr ""
+
+#: src/ItmarDbAction.php:56
+msgid "Skip (Existing revison data available)"
+msgstr ""
+
+#: src/ItmarDbAction.php:111
+msgid "Error (update failed)"
+msgstr ""
+
+#: src/ItmarDbAction.php:114
+msgid "Overwrite successful"
+msgstr ""
+
+#: src/ItmarDbAction.php:116
+#: src/ItmarDbAction.php:127
+#: src/ItmarDbAction.php:129
+msgid "Addition successful"
+msgstr ""
+
+#: src/ItmarDbAction.php:124
+msgid "Error (addition failed)"
+msgstr ""
+
+#: src/ItmarDbAction.php:154
+#: src/ItmarDbAction.php:156
+msgid "Taxonomy: "
+msgstr ""
+
+#: src/ItmarDbAction.php:156
+msgid "has been registered."
+msgstr ""
+
+#: src/ItmarDbAction.php:164
+msgid "Custom Field Import:"
+msgstr ""
+
+#: src/ItmarDbAction.php:205
+msgid "Custom Field Import(ACF):"
+msgstr ""
+
+#: src/ItmarDbAction.php:211
+msgid "Custom Field Import(ACF GROUP):"
+msgstr ""
+
+#: src/ItmarDbAction.php:214
+msgid ": ACF or SCF is not installed"
+msgstr ""
+
+#: src/ItmarDbAction.php:220
+msgid "comment item has been registered."
+msgstr ""
+
+#: src/ItmarDbAction.php:293
+msgid "File not found (file name:"
+msgstr ""
+
+#: src/ItmarDbAction.php:306
+msgid "Processing stopped due to existing file found (media ID:"
+msgstr ""
+
+#: src/ItmarDbAction.php:334
+msgid "File uploaded"
+msgstr ""
+
+#: src/ItmarDbAction.php:337
+msgid "Failed to upload file"
+msgstr ""
+
+#: src/ItmarDbAction.php:346
+msgid "Upload thumbnail: "
+msgstr ""
+
+#: src/ItmarDbAction.php:348
+msgid "Uploading in-content media: "
+msgstr ""
+
+#: src/ItmarDbAction.php:352
+msgid "Uploading acf media: "
+msgstr ""
+
+#: src/ItmarDbAction.php:381
+msgid "Unregistered Post Types"
+msgstr ""
+
+#: src/ItmarModifyPost.php:240
+msgid "Modify Post Menu Settings"
+msgstr ""
+
+#: src/ItmarModifyPost.php:243
+msgid "Post Label Name"
+msgstr ""
+
+#: src/ItmarModifyPost.php:247
+msgid "Enable Archive Page"
+msgstr ""
+
+#: src/ItmarModifyPost.php:249
+msgid "Enable archive"
+msgstr ""
+
+#: src/ItmarModifyPost.php:253
+msgid "Archive Slug"
+msgstr ""
+
+#: src/ItmarModifyPost.php:257
+msgid "Post Supports"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:86
+msgid "Revision Settings"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:110
+msgid "Maximum number of revisions for this post"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:112
+msgid "If left blank, there is no limit."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:218
+msgid "OGP Settings"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:221
+msgid "Enable OGP Tags"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:225
+msgid "Output OGP meta tags in &lt;head&gt; section"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:230
+msgid "Site Name for OGP"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:233
+msgid "If empty, the default site title will be used."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:237
+msgid "Default OGP Image URL"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:240
+#: src/ItmarSEOSettings.php:253
+msgid "Select Image"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:246
+#: src/ItmarSEOSettings.php:259
+msgid "Select an image from media library or input URL."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:250
+msgid "Square OGP Image URL"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:263
+msgid "Twitter Card Type"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:269
+msgid "Select Twitter card type."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:275
+msgid "Google SEO Settings"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:278
+msgid "Google Search Console Setup"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:281
+msgid "Follow the steps below to connect your site with Google Search Console."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:286
+msgid "Open Google Search Console"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:290
+msgid "Click 'Add Property' and choose one of the following types:"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:292
+msgid "Verifies all subdomains and protocols via DNS (recommended). No further steps needed here."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:293
+msgid "Verifies a specific URL (e.g., https://example.com) via HTML tag."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:297
+msgid "Select the verification method you used:"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:301
+msgid "Domain (via DNS)"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:306
+msgid "URL Prefix (via HTML tag)"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:313
+msgid "Paste the content value from the HTML tag:"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:317
+msgid "Use the following link to open the settings page:"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:319
+msgid "From there, go to 'Ownership verification' → 'HTML tag', and copy the content value from the tag."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:325
+msgid "Google Analytics (GA4) Setup"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:327
+msgid "If you haven't set up Google Analytics yet, follow the steps below:"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:332
+msgid "Google Analytics"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:334
+#: src/ItmarSEOSettings.php:382
+msgid "and sign in with your Google account."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:335
+msgid "If this is your first time, you'll see a button labeled"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:336
+msgid "Start Measuring"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:337
+msgid "– click it to begin setup."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:340
+msgid "Create a new Analytics account. This is typically your organization or site name."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:342
+msgid "Next, create a property (e.g., MyWebsite) and choose your time zone and currency."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:344
+msgid "See official setup guide"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:348
+msgid "In the 'Data Streams' step, choose"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:349
+msgid "and enter your site's URL and stream name."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:352
+msgid "After setup, your 'Measurement ID' will be shown in this format:"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:353
+msgid "– copy and paste it below."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:358
+msgid "Measurement ID"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:367
+msgid "Starts with 'G-', e.g. G-ABC123XYZ"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:372
+msgid "Google Tag Manager (GTM)"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:375
+msgid "To use Google Tag Manager for managing various tracking codes (Google Analytics, Ads, etc.), follow the steps below:"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:380
+msgid "Open Google Tag Manager"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:385
+msgid "Click 'Create Account', enter your company or site name, select your country, and choose 'Web' as the target platform."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:388
+msgid "After setup, you’ll get a GTM Container ID that looks like"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:389
+msgid "Paste it below."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:394
+msgid "GTM Container ID"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:402
+msgid "Example: GTM-ABC123X"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:409
+msgid "Also output the noscript GTM code after the opening &lt;body&gt; tag (recommended)"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:414
+msgid "Noindex Settings by Page Type"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:419
+msgid "Noindex on search result pages (?s=...)"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:425
+msgid "Noindex on archive pages (category, tag, date)"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:431
+msgid "Noindex on 404 not found pages"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:435
+msgid "Prevents selected types of pages from being indexed by search engines."
+msgstr ""

@@ -28,18 +28,24 @@ class ItmarDbAction
             $post_type = isset($entry['post_type']) ? esc_html($entry['post_type']) : '';
             $post_status = isset($entry['post_status']) ? esc_html($entry['post_status']) : '';
             $post_date = isset($entry['date']) ? $entry['date'] : current_time('mysql');
-            $post_modified = isset($entry['modified']) ? $entry['modified'] : current_time('mysql');
+
             $post_author = isset($entry['author']) ? get_user_by('login', $entry['author'])->ID ?? 1 : 1;
             $post_name = isset($entry['post_name']) ? esc_html($entry['post_name']) : '';
             $thumbnail_path = $entry['thumbnail_path'] ?? null;
+            //投稿日付が将来日付でpublishの時はステータスを変更
+            $entry_time = strtotime($post_date);
+            $now = current_time('timestamp'); // WordPressの現在時刻（タイムゾーン考慮）
+            if ($entry_time !== false && $entry_time > $now && $post_status = 'publish') {
+                $post_status = 'future';
+            }
 
             // 投稿タイプが登録されていない場合はスキップ
             if (!post_type_exists($post_type)) {
-                $error_logs[] = __("Skip (unregistered post type)", "post-migration");
+                $error_logs[] = __("Skip (unregistered post type)", "wpsetting-class-package");
                 $result_arr = [
                     'result' => 'error',
                     'id' => null,
-                    'message' => __("Skip (unregistered post type)", "post-migration"),
+                    'message' => __("Skip (unregistered post type)", "wpsetting-class-package"),
                     'log' => $error_logs
                 ];
                 return $result_arr;
@@ -47,7 +53,7 @@ class ItmarDbAction
 
             //ID上書きのリビジョンデータはスキップ
             if ($post_id > 0 && get_post($post_id) && $import_mode === "update" && $post_type === "revision") {
-                $error_logs[] = __("Skip (Existing revison data available)", "post-migration");
+                $error_logs[] = __("Skip (Existing revison data available)", "wpsetting-class-package");
                 continue;
             }
 
@@ -61,16 +67,33 @@ class ItmarDbAction
             }
 
             // 投稿データ
-            $post_data = array(
-                'post_title'   => $post_title,
-                'post_content' => wp_slash($post_content),
-                'post_excerpt' => $entry['excerpt'] ?? '',
-                'post_status'  => $post_status,
-                'post_type'    => $post_type,
-                'post_date'     => $post_date,
-                'post_modified' => $post_modified,
-                'post_author'   => $post_author,
-            );
+
+            $entry_time = strtotime($post_date);
+            if ($entry_time !== false) {
+                $formatted_date = date('Y-m-d H:i:s', $entry_time);
+                $formatted_gmt = get_gmt_from_date($formatted_date); // WordPressのGMT変換
+
+                $post_data = array(
+                    'post_title'   => $post_title,
+                    'post_content' => wp_slash($post_content),
+                    'post_excerpt' => $entry['excerpt'] ?? '',
+                    'post_status'  => $post_status,
+                    'post_type'    => $post_type,
+                    'post_date'     => $formatted_date,
+                    'post_date_gmt' => $formatted_gmt,
+                    'post_author'   => $post_author,
+                    'edit_date'      => true, // ← これがポイント！
+                );
+            } else {
+                $post_data = array(
+                    'post_title'   => $post_title,
+                    'post_content' => wp_slash($post_content),
+                    'post_excerpt' => $entry['excerpt'] ?? '',
+                    'post_status'  => $post_status,
+                    'post_type'    => $post_type,
+                    'post_author'   => $post_author,
+                );
+            }
             //revisionレコードの場合
             if ($parent_id != 0 && $post_type === "revision") {
                 $post_data["post_parent"] = $parent_id;
@@ -85,12 +108,12 @@ class ItmarDbAction
                 $post_data['ID'] = $post_id;
                 $updated_post_id = wp_update_post($post_data, true);
                 if (is_wp_error($updated_post_id)) {
-                    $result = __("Error (update failed)", "post-migration");
+                    $result = __("Error (update failed)", "wpsetting-class-package");
                     $error_logs[] = "ID " . $post_id . ": " . $updated_post_id->get_error_message();
                 } else {
-                    $result = __("Overwrite successful", "post-migration");
+                    $result = __("Overwrite successful", "wpsetting-class-package");
                     if ($post_type === "revision") {
-                        $error_logs[] = __("Addition successful", "post-migration");
+                        $error_logs[] = __("Addition successful", "wpsetting-class-package");
                     }
                     $new_post_id = $updated_post_id;
                 }
@@ -98,12 +121,12 @@ class ItmarDbAction
                 $new_post_id = wp_insert_post($post_data, true);
 
                 if (is_wp_error($new_post_id)) {
-                    $result = __("Error (addition failed)", "post-migration");
+                    $result = __("Error (addition failed)", "wpsetting-class-package");
                     $error_logs[] = "ID " . $post_id . ": " . $new_post_id->get_error_message();
                 } else {
-                    $result = __("Addition successful", "post-migration");
+                    $result = __("Addition successful", "wpsetting-class-package");
                     if ($post_type === "revision") {
-                        $error_logs[] = __("Addition successful", "post-migration");
+                        $error_logs[] = __("Addition successful", "wpsetting-class-package");
                     }
                 }
             }
@@ -120,14 +143,17 @@ class ItmarDbAction
 
             //投稿データのインポート終了後
             if ($new_post_id && !is_wp_error($new_post_id)) {
+                if (isset($entry['thumbnail_id'])) { //メディアIDの時
+                    set_post_thumbnail($new_post_id, $entry['thumbnail_id']);
+                }
                 // **ターム（カテゴリー・タグ・カスタム分類）を登録**
                 foreach ($entry['terms'] as $taxonomy => $terms) {
                     $tax_result = wp_set_object_terms($new_post_id, $terms, $taxonomy);
                     //エラーの場合はエラーを記録
                     if (is_wp_error($tax_result)) {
-                        $error_logs[] = "ID " . $new_post_id . ": " . $tax_result->get_error_message() . __("Taxonomy: ", "post-migration") . $taxonomy;
+                        $error_logs[] = "ID " . $new_post_id . ": " . $tax_result->get_error_message() . __("Taxonomy: ", "wpsetting-class-package") . $taxonomy;
                     } else {
-                        $error_logs[] = __("Taxonomy: ", "post-migration") . $taxonomy . "  " . __("has been registered.", "post-migration");
+                        $error_logs[] = __("Taxonomy: ", "wpsetting-class-package") . $taxonomy . "  " . __("has been registered.", "wpsetting-class-package");
                     }
                 }
 
@@ -135,7 +161,7 @@ class ItmarDbAction
                 if (isset($entry['custom_fields'])) {
                     foreach ($entry['custom_fields'] as $field => $value) {
                         update_post_meta($new_post_id, $field, $value);
-                        $error_logs[] = __("Custom Field Import:", "post-migration") . $field;
+                        $error_logs[] = __("Custom Field Import:", "wpsetting-class-package") . $field;
                     }
                 }
                 //acfフィールドのインポート
@@ -145,7 +171,7 @@ class ItmarDbAction
                         $acf_mediaURLs = [];
                         //メディアフィールドを探索し、メディアのURLを配列に格納
                         foreach ($acf_fields as $key => $value) {
-                            if (preg_match('/exported_media\/(.+?\.[a-zA-Z0-9]+)/u', $value, $matches)) { //メディアフィールド
+                            if (is_string($value) && preg_match('/exported_media\/(.+?\.[a-zA-Z0-9]+)/u', $value, $matches)) { //メディアフィールド
                                 $acf_mediaURLs[] = [
                                     'key' => $key,
                                     'value' => $value
@@ -176,22 +202,22 @@ class ItmarDbAction
                                 continue; // グループ要素はここでは処理しない
                             }
                             update_field($key, $value, $new_post_id);
-                            $error_logs[] = __("Custom Field Import(ACF):", "post-migration") . $key;
+                            $error_logs[] = __("Custom Field Import(ACF):", "wpsetting-class-package") . $key;
                         }
 
                         // ACFグループフィールドを更新
                         foreach ($group_fields as $group_key => $group_value) {
                             update_field($group_key, $group_value, $new_post_id);
-                            $error_logs[] = __("Custom Field Import(ACF GROUP):", "post-migration") . $group_key;
+                            $error_logs[] = __("Custom Field Import(ACF GROUP):", "wpsetting-class-package") . $group_key;
                         }
                     } else {
-                        $error_logs[] = "ID " . $new_post_id . __(": ACF or SCF is not installed", "post-migration");
+                        $error_logs[] = "ID " . $new_post_id . __(": ACF or SCF is not installed", "wpsetting-class-package");
                     }
                 }
                 //コメントのインポート
                 if (isset($entry['comments'])) {
                     $result_count = $this->insert_comments_with_meta($entry['comments'], $new_post_id, $import_mode === "update");
-                    $error_logs[] = $result_count . __("comment item has been registered.", "post-migration");
+                    $error_logs[] = $result_count . __("comment item has been registered.", "wpsetting-class-package");
                 }
             }
 
@@ -264,7 +290,7 @@ class ItmarDbAction
         if (is_null($file)) {
             return array(
                 "status" => 'error',
-                "message" => __("File not found (file name:", "post-migration") . $file_name . ")",
+                "message" => __("File not found (file name:", "wpsetting-class-package") . $file_name . ")",
             );
         }
 
@@ -277,7 +303,7 @@ class ItmarDbAction
             $attachment_id = $this->get_attachment_id_by_file_path($dest_path);
             if ($attachment_id) {
                 $result = 'success';
-                $message = __("Processing stopped due to existing file found (media ID:", "post-migration") . $attachment_id . ")";
+                $message = __("Processing stopped due to existing file found (media ID:", "wpsetting-class-package") . $attachment_id . ")";
             }
         } else {
             // wp_handle_upload の前準備
@@ -305,10 +331,10 @@ class ItmarDbAction
 
                 // 成功時のレスポンス
                 $result = 'success';
-                $message  = __("File uploaded", "post-migration");
+                $message  = __("File uploaded", "wpsetting-class-package");
             } else {
                 $result = 'error';
-                $message  = __("Failed to upload file", "post-migration");
+                $message  = __("Failed to upload file", "wpsetting-class-package");
             }
         }
 
@@ -317,13 +343,13 @@ class ItmarDbAction
         if ($attachment_id) {
             if ($media_type === 'thumbnail') {
                 set_post_thumbnail($post_id, $attachment_id);
-                $message = __('Upload thumbnail: ', "post-migration") . $message;
+                $message = __('Upload thumbnail: ', "wpsetting-class-package") . $message;
             } elseif ($media_type === 'content') {
-                $message = __('Uploading in-content media: ', "post-migration") . $message;
+                $message = __('Uploading in-content media: ', "wpsetting-class-package") . $message;
             } elseif ($media_type === 'acf_field') {
                 if (!empty($acf_field)) {
                     update_field($acf_field, $attachment_id, $post_id);
-                    $message = __('Uploading acf media: ', "post-migration") . $message;
+                    $message = __('Uploading acf media: ', "wpsetting-class-package") . $message;
                 }
             }
         }
@@ -352,7 +378,7 @@ class ItmarDbAction
     public function get_post_type_label($post_type)
     {
         $post_type_object = get_post_type_object($post_type);
-        return $post_type_object ? $post_type_object->label : '未登録の投稿タイプ';
+        return $post_type_object ? $post_type_object->label : __('Unregistered Post Types', 'wpsetting-class-package');
     }
 
     //WordPress のメディアライブラリからファイルのメディア ID を取得する関数
@@ -550,7 +576,7 @@ class ItmarDbAction
     }
 
     // 単一のコメントを `wp_insert_comment()` で挿入
-    public function post_single_comment($comment_data, $post_id, $override_flg)
+    private function post_single_comment($comment_data, $post_id, $override_flg)
     {
         $comment_arr = array(
             'comment_post_ID'      => intval($post_id),
