@@ -1,6 +1,6 @@
 <?php
 
-namespace Itmar\WpSettingClassPackage;
+namespace Itmar\WpsettingClassPackage;
 
 if (!defined('ABSPATH')) exit;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Itmar\WpSettingClassPackage;
+namespace Itmar\WpsettingClassPackage;
 
 if (!defined('ABSPATH')) exit;
 
@@ -211,16 +211,16 @@ class ItmarModifyPost
         $saved_supports = get_option($this->supports_option);
 
         $support_options = [
-            'title'           => __('Title', 'wp-extra-settings'),
-            'editor'          => __('Editor', 'wp-extra-settings'),
-            'author'          => __('Author', 'wp-extra-settings'),
-            'excerpt'         => __('Excerpt', 'wp-extra-settings'),
-            'trackbacks'      => __('Trackbacks(Deprecated)', 'wp-extra-settings'),
-            'custom-fields'   => __('Custom Fields', 'wp-extra-settings'),
-            'comments'        => __('Comments', 'wp-extra-settings'),
-            'revisions'       => __('Revisions', 'wp-extra-settings'),
-            'post-formats'    => __('Post Formats(Deprecated)', 'wp-extra-settings'),
-            'thumbnail'       => __('Featured Image', 'wp-extra-settings'),
+            'title'           => __('Title', 'wpsetting-class-package'),
+            'editor'          => __('Editor', 'wpsetting-class-package'),
+            'author'          => __('Author', 'wpsetting-class-package'),
+            'excerpt'         => __('Excerpt', 'wpsetting-class-package'),
+            'trackbacks'      => __('Trackbacks(Deprecated)', 'wpsetting-class-package'),
+            'custom-fields'   => __('Custom Fields', 'wpsetting-class-package'),
+            'comments'        => __('Comments', 'wpsetting-class-package'),
+            'revisions'       => __('Revisions', 'wpsetting-class-package'),
+            'post-formats'    => __('Post Formats(Deprecated)', 'wpsetting-class-package'),
+            'thumbnail'       => __('Featured Image', 'wpsetting-class-package'),
         ];
 
         // レンダリング用の supports 配列を準備

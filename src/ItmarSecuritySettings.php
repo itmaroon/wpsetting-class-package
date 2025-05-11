@@ -1,6 +1,6 @@
 <?php
 
-namespace Itmar\WpSettingClassPackage;
+namespace Itmar\WpsettingClassPackage;
 
 if (!defined('ABSPATH')) exit;
 
@@ -89,7 +89,7 @@ class ItmarSecuritySettings
         $request_uri = $_SERVER['REQUEST_URI'];
 
         if (strpos($request_uri, 'wp-login.php') !== false && strpos($request_uri, $custom_slug) === false) {
-            wp_die(__('404 Not Found', 'wp-extra-settings'), '', array('response' => 404));
+            wp_die(__('404 Not Found', 'wpsetting-class-package'), '', array('response' => 404));
         }
     }
 
@@ -134,7 +134,7 @@ class ItmarSecuritySettings
         $disable_author = get_option($this->disable_author_archive_option, 1);
 
         if ($disable_author && isset($query_vars['author'])) {
-            wp_die(__('404 Not Found', 'wp-extra-settings'), '', array('response' => 404));
+            wp_die(__('404 Not Found', 'wpsetting-class-package'), '', array('response' => 404));
         }
         return $query_vars;
     }
@@ -188,30 +188,30 @@ class ItmarSecuritySettings
         $disable_author = get_option($this->disable_author_archive_option, 1);
         $disable_xmlrpc = get_option($this->disable_xmlrpc_option, 1);
 ?>
-        <h2><?php _e('Security Settings', 'wp-extra-settings'); ?></h2>
+        <h2><?php _e('Security Settings', 'wpsetting-class-package'); ?></h2>
         <table class="form-table">
             <tr valign="top">
-                <th scope="row"><?php _e('Custom Login URL', 'wp-extra-settings'); ?></th>
+                <th scope="row"><?php _e('Custom Login URL', 'wpsetting-class-package'); ?></th>
                 <td>
                     <input type="text" name="<?php echo esc_attr($this->login_slug_option); ?>" value="<?php echo esc_attr($login_slug); ?>" class="regular-text" />
-                    <p class="description"><?php _e('Change the default login URL (wp-login.php).', 'wp-extra-settings'); ?></p>
+                    <p class="description"><?php _e('Change the default login URL (wp-login.php).', 'wpsetting-class-package'); ?></p>
                 </td>
             </tr>
             <tr valign="top">
-                <th scope="row"><?php _e('Disable Author Archives & REST API User Endpoint', 'wp-extra-settings'); ?></th>
+                <th scope="row"><?php _e('Disable Author Archives & REST API User Endpoint', 'wpsetting-class-package'); ?></th>
                 <td>
                     <label>
                         <input type="checkbox" name="<?php echo esc_attr($this->disable_author_archive_option); ?>" value="1" <?php checked($disable_author, 1); ?> />
-                        <?php _e('Block access to /?author= and REST API /wp/v2/users.', 'wp-extra-settings'); ?>
+                        <?php _e('Block access to /?author= and REST API /wp/v2/users.', 'wpsetting-class-package'); ?>
                     </label>
                 </td>
             </tr>
             <tr valign="top">
-                <th scope="row"><?php _e('Disable XML-RPC', 'wp-extra-settings'); ?></th>
+                <th scope="row"><?php _e('Disable XML-RPC', 'wpsetting-class-package'); ?></th>
                 <td>
                     <label>
                         <input type="checkbox" name="<?php echo esc_attr($this->disable_xmlrpc_option); ?>" value="1" <?php checked($disable_xmlrpc, 1); ?> />
-                        <?php _e('Disable XML-RPC endpoint (used for pingbacks, remote publishing, etc).', 'wp-extra-settings'); ?>
+                        <?php _e('Disable XML-RPC endpoint (used for pingbacks, remote publishing, etc).', 'wpsetting-class-package'); ?>
                     </label>
                 </td>
             </tr>

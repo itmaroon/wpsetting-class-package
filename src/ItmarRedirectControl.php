@@ -1,6 +1,6 @@
 <?php
 
-namespace Itmar\WpSettingClassPackage;
+namespace Itmar\WpsettingClassPackage;
 
 if (!defined('ABSPATH')) exit;
 
@@ -122,16 +122,18 @@ class ItmarRedirectControl
         $enabled = get_option($this->redirect_option, 0);
 
 ?>
-        <h2><?php _e('Redirect Settings', 'wp-extra-settings'); ?></h2>
+        <h2><?php
+            _e('Redirect Settings', 'wpsetting-class-package');
+            ?></h2>
         <table class="form-table">
             <tr>
-                <th scope="row"><?php _e('Redirecting from the domain root URL', 'wp-extra-settings'); ?></th>
+                <th scope="row"><?php _e('Redirecting from the domain root URL', 'wpsetting-class-package'); ?></th>
                 <td>
                     <label>
                         <input type="checkbox" name="<?php echo esc_attr($this->redirect_option); ?>" value="1" <?php checked($enabled, 1); ?>>
-                        <?php _e('Redirect the domain root URL to this site', 'wp-extra-settings'); ?>
+                        <?php _e('Redirect the domain root URL to this site', 'wpsetting-class-package'); ?>
                     </label>
-                    <p class="description"><?php _e('If this site is installed on a subdomain, it will be accessible at the root domain URL.', 'wp-extra-settings'); ?></p>
+                    <p class="description"><?php _e('If this site is installed on a subdomain, it will be accessible at the root domain URL.', 'wpsetting-class-package'); ?></p>
                 </td>
             </tr>
         </table>
@@ -144,7 +146,7 @@ class ItmarRedirectControl
         if (get_option('itmar_permission_error')) {
         ?>
             <div class="notice notice-error is-dismissible">
-                <p><?php _e('Failed to create index.php. The file already exists or insufficient permissions. Please remove index.php manually if you want to enable redirect.', 'wp-extra-settings'); ?></p>
+                <p><?php _e('Failed to create index.php. The file already exists or insufficient permissions. Please remove index.php manually if you want to enable redirect.', 'wpsetting-class-package'); ?></p>
             </div>
 <?php
             delete_option('itmar_permission_error'); // 表示後に削除

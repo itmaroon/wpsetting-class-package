@@ -1,6 +1,6 @@
 <?php
 
-namespace Itmar\WpSettingClassPackage;
+namespace Itmar\WpsettingClassPackage;
 
 //リビジョンの制御
 
@@ -152,19 +152,19 @@ class ItmarRevisionClass
     {
         $enabled = get_option($this->enabled_option, 0);
 ?>
-        <h2><?php _e('Revision Control Settings', 'wp-extra-settings'); ?></h2>
+        <h2><?php _e('Revision Control Settings', 'wpsetting-class-package'); ?></h2>
         <table class="form-table">
             <tr>
-                <th scope="row"><?php _e('Enable per-post revision limit control', 'wp-extra-settings'); ?></th>
+                <th scope="row"><?php _e('Enable per-post revision limit control', 'wpsetting-class-package'); ?></th>
                 <td>
                     <label>
                         <input type="checkbox" name="<?php echo esc_attr($this->enabled_option); ?>" value="1" <?php checked($enabled, 1); ?> />
-                        <?php _e('Enable individual post revision limit setting.', 'wp-extra-settings'); ?>
+                        <?php _e('Enable individual post revision limit setting.', 'wpsetting-class-package'); ?>
                     </label>
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?php _e('Default Revision Setting', 'wp-extra-settings'); ?></th>
+                <th scope="row"><?php _e('Default Revision Setting', 'wpsetting-class-package'); ?></th>
                 <td>
                     <p class="description">
                         <?php
@@ -172,12 +172,12 @@ class ItmarRevisionClass
                         $revisions_setting = $this->get_default_limit();
 
                         if ($revisions_setting === true) {
-                            _e('Not set (Unlimited)', 'wp-extra-settings');
+                            _e('Not set (Unlimited)', 'wpsetting-class-package');
                         } elseif ($revisions_setting === false || $revisions_setting === 0) {
-                            _e('Do not save', 'wp-extra-settings');
+                            _e('Do not save', 'wpsetting-class-package');
                         } else {
                             printf(
-                                __('Save up to %d revisions', 'wp-extra-settings'),
+                                __('Save up to %d revisions', 'wpsetting-class-package'),
                                 esc_html($revisions_setting)
                             );
                         }

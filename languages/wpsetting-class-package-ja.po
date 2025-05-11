@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-09T14:50:07+02:00\n"
-"PO-Revision-Date: 2025-05-09 22:05+0900\n"
+"POT-Creation-Date: 2025-05-10T14:04:15+02:00\n"
+"PO-Revision-Date: 2025-05-11 18:52+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
@@ -100,6 +100,46 @@ msgstr "ACFメディアのアップロード:"
 msgid "Unregistered Post Types"
 msgstr "登録されていない投稿タイプ"
 
+#: src/ItmarModifyPost.php:214
+msgid "Title"
+msgstr "タイトル"
+
+#: src/ItmarModifyPost.php:215
+msgid "Editor"
+msgstr "エディター"
+
+#: src/ItmarModifyPost.php:216
+msgid "Author"
+msgstr "著者"
+
+#: src/ItmarModifyPost.php:217
+msgid "Excerpt"
+msgstr "抜粋"
+
+#: src/ItmarModifyPost.php:218
+msgid "Trackbacks(Deprecated)"
+msgstr "トラックバック（非推奨）"
+
+#: src/ItmarModifyPost.php:219
+msgid "Custom Fields"
+msgstr "カスタムフィールド"
+
+#: src/ItmarModifyPost.php:220
+msgid "Comments"
+msgstr "コメント"
+
+#: src/ItmarModifyPost.php:221
+msgid "Revisions"
+msgstr "リビジョン"
+
+#: src/ItmarModifyPost.php:222
+msgid "Post Formats(Deprecated)"
+msgstr "投稿フォーマット（非推奨）"
+
+#: src/ItmarModifyPost.php:223
+msgid "Featured Image"
+msgstr "アイキャッチ画像"
+
 #: src/ItmarModifyPost.php:240
 msgid "Modify Post Menu Settings"
 msgstr "投稿メニュー変更設定"
@@ -124,6 +164,36 @@ msgstr "アーカイブスラッグ"
 msgid "Post Supports"
 msgstr "投稿のサポート"
 
+#: src/ItmarRedirectControl.php:125
+msgid "Redirect Settings"
+msgstr "リダイレクト設定"
+
+#: src/ItmarRedirectControl.php:128
+msgid "Redirecting from the domain root URL"
+msgstr "ドメインルートURLからリダイレクト"
+
+#: src/ItmarRedirectControl.php:132
+msgid "Redirect the domain root URL to this site"
+msgstr ""
+"ドメイン ルート URL からこのサイトのサブディレクトリへのリダイレクトを有効に"
+"します。"
+
+#: src/ItmarRedirectControl.php:134
+msgid ""
+"If this site is installed on a subdomain, it will be accessible at the root "
+"domain URL."
+msgstr ""
+"このサイトがサブドメインにインストールされている場合は、ルートドメイン URL で"
+"アクセスできます。"
+
+#: src/ItmarRedirectControl.php:147
+msgid ""
+"Failed to create index.php. The file already exists or insufficient "
+"permissions. Please remove index.php manually if you want to enable redirect."
+msgstr ""
+"index.php の作成に失敗しました。ファイルが既に存在するか、権限が不十分です。"
+"リダイレクトを有効にする場合は、index.php を手動で削除してください。"
+
 #: src/ItmarRevisionClass.php:86
 msgid "Revision Settings"
 msgstr "リビジョン設定"
@@ -135,6 +205,68 @@ msgstr "この投稿の最大リビジョン数"
 #: src/ItmarRevisionClass.php:112
 msgid "If left blank, there is no limit."
 msgstr "空白の場合は制限はありません。"
+
+#: src/ItmarRevisionClass.php:155
+msgid "Revision Control Settings"
+msgstr "リビジョン管理設定"
+
+#: src/ItmarRevisionClass.php:158
+msgid "Enable per-post revision limit control"
+msgstr "投稿ごとのリビジョン制限制御を有効にする"
+
+#: src/ItmarRevisionClass.php:162
+msgid "Enable individual post revision limit setting."
+msgstr "個別の投稿のリビジョン制限設定を有効にします。"
+
+#: src/ItmarRevisionClass.php:167
+msgid "Default Revision Setting"
+msgstr "デフォルトのリビジョン設定"
+
+#: src/ItmarRevisionClass.php:175
+msgid "Not set (Unlimited)"
+msgstr "未設定（無制限）"
+
+#: src/ItmarRevisionClass.php:177
+msgid "Do not save"
+msgstr "保存しない"
+
+#: src/ItmarRevisionClass.php:180
+msgid "Save up to %d revisions"
+msgstr "最大 %d のリビジョンを保存"
+
+#: src/ItmarSecuritySettings.php:92 src/ItmarSecuritySettings.php:137
+msgid "404 Not Found"
+msgstr "404 Not Found"
+
+#: src/ItmarSecuritySettings.php:191
+msgid "Security Settings"
+msgstr "セキュリティ設定"
+
+#: src/ItmarSecuritySettings.php:194
+msgid "Custom Login URL"
+msgstr "カスタムログインURL"
+
+#: src/ItmarSecuritySettings.php:197
+msgid "Change the default login URL (wp-login.php)."
+msgstr "デフォルトのログイン URL (wp-login.php) を変更します。"
+
+#: src/ItmarSecuritySettings.php:201
+msgid "Disable Author Archives & REST API User Endpoint"
+msgstr "著者アーカイブとREST APIユーザーエンドポイントを無効にする"
+
+#: src/ItmarSecuritySettings.php:205
+msgid "Block access to /?author= and REST API /wp/v2/users."
+msgstr "/?author= および REST API /wp/v2/users へのアクセスをブロックします。"
+
+#: src/ItmarSecuritySettings.php:210
+msgid "Disable XML-RPC"
+msgstr "XML-RPCを無効にする"
+
+#: src/ItmarSecuritySettings.php:214
+msgid "Disable XML-RPC endpoint (used for pingbacks, remote publishing, etc)."
+msgstr ""
+"XML-RPC エンドポイントを無効にします (pingback、リモート公開などに使用されま"
+"す)。"
 
 #: src/ItmarSEOSettings.php:218
 msgid "OGP Settings"
@@ -408,108 +540,6 @@ msgstr ""
 
 #~ msgid "Save Settings"
 #~ msgstr "設定を保存"
-
-#~ msgid "Title"
-#~ msgstr "タイトル"
-
-#~ msgid "Editor"
-#~ msgstr "エディター"
-
-#~ msgid "Author"
-#~ msgstr "著者"
-
-#~ msgid "Excerpt"
-#~ msgstr "抜粋"
-
-#~ msgid "Trackbacks(Deprecated)"
-#~ msgstr "トラックバック（非推奨）"
-
-#~ msgid "Comments"
-#~ msgstr "コメント"
-
-#~ msgid "Revisions"
-#~ msgstr "リビジョン"
-
-#~ msgid "Post Formats(Deprecated)"
-#~ msgstr "投稿フォーマット（非推奨）"
-
-#~ msgid "Featured Image"
-#~ msgstr "アイキャッチ画像"
-
-#~ msgid "Redirect Settings"
-#~ msgstr "リダイレクト設定"
-
-#~ msgid "Redirecting from the domain root URL"
-#~ msgstr "ドメインルートURLからリダイレクト"
-
-#~ msgid "Redirect the domain root URL to this site"
-#~ msgstr ""
-#~ "ドメイン ルート URL からこのサイトのサブディレクトリへのリダイレクトを有効"
-#~ "にします。"
-
-#~ msgid ""
-#~ "If this site is installed on a subdomain, it will be accessible at the "
-#~ "root domain URL."
-#~ msgstr ""
-#~ "このサイトがサブドメインにインストールされている場合は、ルートドメイン "
-#~ "URL でアクセスできます。"
-
-#~ msgid ""
-#~ "Failed to create index.php. The file already exists or insufficient "
-#~ "permissions. Please remove index.php manually if you want to enable "
-#~ "redirect."
-#~ msgstr ""
-#~ "index.php の作成に失敗しました。ファイルが既に存在するか、権限が不十分で"
-#~ "す。リダイレクトを有効にする場合は、index.php を手動で削除してください。"
-
-#~ msgid "Revision Control Settings"
-#~ msgstr "リビジョン管理設定"
-
-#~ msgid "Enable per-post revision limit control"
-#~ msgstr "投稿ごとのリビジョン制限制御を有効にする"
-
-#~ msgid "Enable individual post revision limit setting."
-#~ msgstr "個別の投稿のリビジョン制限設定を有効にします。"
-
-#~ msgid "Default Revision Setting"
-#~ msgstr "デフォルトのリビジョン設定"
-
-#~ msgid "Not set (Unlimited)"
-#~ msgstr "未設定（無制限）"
-
-#~ msgid "Do not save"
-#~ msgstr "保存しない"
-
-#~ msgid "Save up to %d revisions"
-#~ msgstr "最大 %d のリビジョンを保存"
-
-#~ msgid "404 Not Found"
-#~ msgstr "404 Not Found"
-
-#~ msgid "Security Settings"
-#~ msgstr "セキュリティ設定"
-
-#~ msgid "Custom Login URL"
-#~ msgstr "カスタムログインURL"
-
-#~ msgid "Change the default login URL (wp-login.php)."
-#~ msgstr "デフォルトのログイン URL (wp-login.php) を変更します。"
-
-#~ msgid "Disable Author Archives & REST API User Endpoint"
-#~ msgstr "著者アーカイブとREST APIユーザーエンドポイントを無効にする"
-
-#~ msgid "Block access to /?author= and REST API /wp/v2/users."
-#~ msgstr ""
-#~ "/?author= および REST API /wp/v2/users へのアクセスをブロックします。"
-
-#~ msgid "Disable XML-RPC"
-#~ msgstr "XML-RPCを無効にする"
-
-#~ msgid ""
-#~ "Disable XML-RPC endpoint (used for pingbacks, remote publishing, etc)."
-#~ msgstr ""
-#~ "XML-RPC エンドポイントを無効にします (pingback、リモート公開などに使用され"
-#~ "ます)。"
 
 #~ msgid "Custom Header Code"
 #~ msgstr "カスタムヘッダーコード"

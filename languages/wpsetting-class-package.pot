@@ -7,7 +7,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-09T14:50:07+02:00\n"
+"POT-Creation-Date: 2025-05-10T14:04:15+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: wpsetting-class-package\n"
@@ -100,6 +100,46 @@ msgstr ""
 msgid "Unregistered Post Types"
 msgstr ""
 
+#: src/ItmarModifyPost.php:214
+msgid "Title"
+msgstr ""
+
+#: src/ItmarModifyPost.php:215
+msgid "Editor"
+msgstr ""
+
+#: src/ItmarModifyPost.php:216
+msgid "Author"
+msgstr ""
+
+#: src/ItmarModifyPost.php:217
+msgid "Excerpt"
+msgstr ""
+
+#: src/ItmarModifyPost.php:218
+msgid "Trackbacks(Deprecated)"
+msgstr ""
+
+#: src/ItmarModifyPost.php:219
+msgid "Custom Fields"
+msgstr ""
+
+#: src/ItmarModifyPost.php:220
+msgid "Comments"
+msgstr ""
+
+#: src/ItmarModifyPost.php:221
+msgid "Revisions"
+msgstr ""
+
+#: src/ItmarModifyPost.php:222
+msgid "Post Formats(Deprecated)"
+msgstr ""
+
+#: src/ItmarModifyPost.php:223
+msgid "Featured Image"
+msgstr ""
+
 #: src/ItmarModifyPost.php:240
 msgid "Modify Post Menu Settings"
 msgstr ""
@@ -124,6 +164,26 @@ msgstr ""
 msgid "Post Supports"
 msgstr ""
 
+#: src/ItmarRedirectControl.php:125
+msgid "Redirect Settings"
+msgstr ""
+
+#: src/ItmarRedirectControl.php:128
+msgid "Redirecting from the domain root URL"
+msgstr ""
+
+#: src/ItmarRedirectControl.php:132
+msgid "Redirect the domain root URL to this site"
+msgstr ""
+
+#: src/ItmarRedirectControl.php:134
+msgid "If this site is installed on a subdomain, it will be accessible at the root domain URL."
+msgstr ""
+
+#: src/ItmarRedirectControl.php:147
+msgid "Failed to create index.php. The file already exists or insufficient permissions. Please remove index.php manually if you want to enable redirect."
+msgstr ""
+
 #: src/ItmarRevisionClass.php:86
 msgid "Revision Settings"
 msgstr ""
@@ -134,6 +194,67 @@ msgstr ""
 
 #: src/ItmarRevisionClass.php:112
 msgid "If left blank, there is no limit."
+msgstr ""
+
+#: src/ItmarRevisionClass.php:155
+msgid "Revision Control Settings"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:158
+msgid "Enable per-post revision limit control"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:162
+msgid "Enable individual post revision limit setting."
+msgstr ""
+
+#: src/ItmarRevisionClass.php:167
+msgid "Default Revision Setting"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:175
+msgid "Not set (Unlimited)"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:177
+msgid "Do not save"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:180
+msgid "Save up to %d revisions"
+msgstr ""
+
+#: src/ItmarSecuritySettings.php:92
+#: src/ItmarSecuritySettings.php:137
+msgid "404 Not Found"
+msgstr ""
+
+#: src/ItmarSecuritySettings.php:191
+msgid "Security Settings"
+msgstr ""
+
+#: src/ItmarSecuritySettings.php:194
+msgid "Custom Login URL"
+msgstr ""
+
+#: src/ItmarSecuritySettings.php:197
+msgid "Change the default login URL (wp-login.php)."
+msgstr ""
+
+#: src/ItmarSecuritySettings.php:201
+msgid "Disable Author Archives & REST API User Endpoint"
+msgstr ""
+
+#: src/ItmarSecuritySettings.php:205
+msgid "Block access to /?author= and REST API /wp/v2/users."
+msgstr ""
+
+#: src/ItmarSecuritySettings.php:210
+msgid "Disable XML-RPC"
+msgstr ""
+
+#: src/ItmarSecuritySettings.php:214
+msgid "Disable XML-RPC endpoint (used for pingbacks, remote publishing, etc)."
 msgstr ""
 
 #: src/ItmarSEOSettings.php:218
