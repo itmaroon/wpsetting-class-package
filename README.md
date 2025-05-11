@@ -11,12 +11,12 @@ WordPressの設定で管理画面のメニューから設定することがで�
 composer require itmar/wpsetting-class-package
 ```
 ## 収納されている名前空間・クラス
-namespace Itmar\WpsettingClassPackage;
+namespace Itmar\WpsettingClassPackage  
 class ItmarRedirectControl      
-class ItmarRevisionClass 
+class ItmarRevisionClass  
 class ItmarModifyPost  
 class ItmarSecuritySettings  
-class ItmarSEOSettings
+class ItmarSEOSettings  
 class ItmarDbAction
 
 ## 変更履歴
