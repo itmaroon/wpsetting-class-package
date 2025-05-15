@@ -272,6 +272,9 @@ class ItmarDbAction
     //インポートメディアの処理
     public function set_media($media_array, $post_id, $file_path, $media_type)
     {
+        // 一時的に GD に切り替えるフィルターを追加
+        add_filter('wp_image_editors', [$this, 'force_gd_editor']);
+
         //acf_fieldのときはオブジェクトが来るのでそれに対応
         if ($media_type === 'acf_field') {
             $file_name = basename($file_path['value']);
@@ -354,12 +357,20 @@ class ItmarDbAction
             }
         }
 
+        // フィルターを元に戻す
+        remove_filter('wp_image_editors', [$this, 'force_gd_editor']);
+
         return array(
             "status" => $result,
             "message" => $message,
             "attachment_id" => $attachment_id,
             "attachment_url" => $attachment_url,
         );
+    }
+
+    public function force_gd_editor($editors)
+    {
+        return ['WP_Image_Editor_GD'];
     }
 
     //acfまたはscfがアクティブかどうかを判定する関数
