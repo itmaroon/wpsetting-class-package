@@ -211,16 +211,16 @@ class ItmarModifyPost
         $saved_supports = get_option($this->supports_option);
 
         $support_options = [
-            'title'           => __('Title', 'wpsetting-class-package'),
-            'editor'          => __('Editor', 'wpsetting-class-package'),
-            'author'          => __('Author', 'wpsetting-class-package'),
-            'excerpt'         => __('Excerpt', 'wpsetting-class-package'),
-            'trackbacks'      => __('Trackbacks(Deprecated)', 'wpsetting-class-package'),
-            'custom-fields'   => __('Custom Fields', 'wpsetting-class-package'),
-            'comments'        => __('Comments', 'wpsetting-class-package'),
-            'revisions'       => __('Revisions', 'wpsetting-class-package'),
-            'post-formats'    => __('Post Formats(Deprecated)', 'wpsetting-class-package'),
-            'thumbnail'       => __('Featured Image', 'wpsetting-class-package'),
+            'title'           => esc_html__('Title', 'wpsetting-class-package'),
+            'editor'          => esc_html__('Editor', 'wpsetting-class-package'),
+            'author'          => esc_html__('Author', 'wpsetting-class-package'),
+            'excerpt'         => esc_html__('Excerpt', 'wpsetting-class-package'),
+            'trackbacks'      => esc_html__('Trackbacks(Deprecated)', 'wpsetting-class-package'),
+            'custom-fields'   => esc_html__('Custom Fields', 'wpsetting-class-package'),
+            'comments'        => esc_html__('Comments', 'wpsetting-class-package'),
+            'revisions'       => esc_html__('Revisions', 'wpsetting-class-package'),
+            'post-formats'    => esc_html__('Post Formats(Deprecated)', 'wpsetting-class-package'),
+            'thumbnail'       => esc_html__('Featured Image', 'wpsetting-class-package'),
         ];
 
         // レンダリング用の supports 配列を準備
@@ -237,24 +237,24 @@ class ItmarModifyPost
             }
         }
 ?>
-        <h2><?php echo __("Modify Post Menu Settings", "wpsetting-class-package"); ?></h2>
+        <h2><?php echo esc_html__("Modify Post Menu Settings", "wpsetting-class-package"); ?></h2>
         <table class="form-table">
             <tr>
-                <th scope="row"><?php echo __("Post Label Name", "wpsetting-class-package"); ?></th>
+                <th scope="row"><?php echo esc_html__("Post Label Name", "wpsetting-class-package"); ?></th>
                 <td><input type="text" name="itmar_post_label" value="<?php echo esc_attr($post_label); ?>" class="regular-text" /></td>
             </tr>
             <tr>
-                <th scope="row"><?php echo __("Enable Archive Page", "wpsetting-class-package"); ?></th>
+                <th scope="row"><?php echo esc_html__("Enable Archive Page", "wpsetting-class-package"); ?></th>
                 <td>
-                    <label><input type="checkbox" name="itmar_post_has_archive" value="1" <?php checked(1, $has_archive); ?> /><?php echo __("Enable archive", "wpsetting-class-package"); ?></label>
+                    <label><input type="checkbox" name="itmar_post_has_archive" value="1" <?php checked(1, $has_archive); ?> /><?php echo esc_html__("Enable archive", "wpsetting-class-package"); ?></label>
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?php echo __("Archive Slug", "wpsetting-class-package"); ?></th>
+                <th scope="row"><?php echo esc_html__("Archive Slug", "wpsetting-class-package"); ?></th>
                 <td><input type="text" name="itmar_post_archive_slug" value="<?php echo esc_attr($archive_slug); ?>" class="regular-text" /></td>
             </tr>
             <tr>
-                <th scope="row"><?php echo __("Post Supports", "wpsetting-class-package"); ?></th>
+                <th scope="row"><?php echo esc_html__("Post Supports", "wpsetting-class-package"); ?></th>
                 <td>
                     <div class="post-supports-wrapper">
                         <?php foreach ($support_options as $key => $label): ?>

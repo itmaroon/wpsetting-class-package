@@ -89,7 +89,7 @@ class ItmarSecuritySettings
         $request_uri = $_SERVER['REQUEST_URI'];
 
         if (strpos($request_uri, 'wp-login.php') !== false && strpos($request_uri, $custom_slug) === false) {
-            wp_die(__('404 Not Found', 'wpsetting-class-package'), '', array('response' => 404));
+            wp_die(esc_html__('404 Not Found', 'wpsetting-class-package'), '', array('response' => 404));
         }
     }
 
@@ -134,7 +134,7 @@ class ItmarSecuritySettings
         $disable_author = get_option($this->disable_author_archive_option, 1);
 
         if ($disable_author && isset($query_vars['author'])) {
-            wp_die(__('404 Not Found', 'wpsetting-class-package'), '', array('response' => 404));
+            wp_die(esc_html__('404 Not Found', 'wpsetting-class-package'), '', array('response' => 404));
         }
         return $query_vars;
     }

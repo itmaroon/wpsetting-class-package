@@ -41,11 +41,11 @@ class ItmarDbAction
 
             // 投稿タイプが登録されていない場合はスキップ
             if (!post_type_exists($post_type)) {
-                $error_logs[] = __("Skip (unregistered post type)", "wpsetting-class-package");
+                $error_logs[] = esc_html__("Skip (unregistered post type)", "wpsetting-class-package");
                 $result_arr = [
                     'result' => 'error',
                     'id' => null,
-                    'message' => __("Skip (unregistered post type)", "wpsetting-class-package"),
+                    'message' => esc_html__("Skip (unregistered post type)", "wpsetting-class-package"),
                     'log' => $error_logs
                 ];
                 return $result_arr;
@@ -53,7 +53,7 @@ class ItmarDbAction
 
             //ID上書きのリビジョンデータはスキップ
             if ($post_id > 0 && get_post($post_id) && $import_mode === "update" && $post_type === "revision") {
-                $error_logs[] = __("Skip (Existing revison data available)", "wpsetting-class-package");
+                $error_logs[] = esc_html__("Skip (Existing revison data available)", "wpsetting-class-package");
                 continue;
             }
 
@@ -108,12 +108,12 @@ class ItmarDbAction
                 $post_data['ID'] = $post_id;
                 $updated_post_id = wp_update_post($post_data, true);
                 if (is_wp_error($updated_post_id)) {
-                    $result = __("Error (update failed)", "wpsetting-class-package");
+                    $result = esc_html__("Error (update failed)", "wpsetting-class-package");
                     $error_logs[] = "ID " . $post_id . ": " . $updated_post_id->get_error_message();
                 } else {
-                    $result = __("Overwrite successful", "wpsetting-class-package");
+                    $result = esc_html__("Overwrite successful", "wpsetting-class-package");
                     if ($post_type === "revision") {
-                        $error_logs[] = __("Addition successful", "wpsetting-class-package");
+                        $error_logs[] = esc_html__("Addition successful", "wpsetting-class-package");
                     }
                     $new_post_id = $updated_post_id;
                 }
@@ -121,12 +121,12 @@ class ItmarDbAction
                 $new_post_id = wp_insert_post($post_data, true);
 
                 if (is_wp_error($new_post_id)) {
-                    $result = __("Error (addition failed)", "wpsetting-class-package");
+                    $result = esc_html__("Error (addition failed)", "wpsetting-class-package");
                     $error_logs[] = "ID " . $post_id . ": " . $new_post_id->get_error_message();
                 } else {
-                    $result = __("Addition successful", "wpsetting-class-package");
+                    $result = esc_html__("Addition successful", "wpsetting-class-package");
                     if ($post_type === "revision") {
-                        $error_logs[] = __("Addition successful", "wpsetting-class-package");
+                        $error_logs[] = esc_html__("Addition successful", "wpsetting-class-package");
                     }
                 }
             }
@@ -151,9 +151,9 @@ class ItmarDbAction
                     $tax_result = wp_set_object_terms($new_post_id, $terms, $taxonomy);
                     //エラーの場合はエラーを記録
                     if (is_wp_error($tax_result)) {
-                        $error_logs[] = "ID " . $new_post_id . ": " . $tax_result->get_error_message() . __("Taxonomy: ", "wpsetting-class-package") . $taxonomy;
+                        $error_logs[] = "ID " . $new_post_id . ": " . $tax_result->get_error_message() . esc_html__("Taxonomy: ", "wpsetting-class-package") . $taxonomy;
                     } else {
-                        $error_logs[] = __("Taxonomy: ", "wpsetting-class-package") . $taxonomy . "  " . __("has been registered.", "wpsetting-class-package");
+                        $error_logs[] = esc_html__("Taxonomy: ", "wpsetting-class-package") . $taxonomy . "  " . esc_html__("has been registered.", "wpsetting-class-package");
                     }
                 }
 
@@ -161,7 +161,7 @@ class ItmarDbAction
                 if (isset($entry['custom_fields'])) {
                     foreach ($entry['custom_fields'] as $field => $value) {
                         update_post_meta($new_post_id, $field, $value);
-                        $error_logs[] = __("Custom Field Import:", "wpsetting-class-package") . $field;
+                        $error_logs[] = esc_html__("Custom Field Import:", "wpsetting-class-package") . $field;
                     }
                 }
                 //acfフィールドのインポート
@@ -202,22 +202,22 @@ class ItmarDbAction
                                 continue; // グループ要素はここでは処理しない
                             }
                             update_field($key, $value, $new_post_id);
-                            $error_logs[] = __("Custom Field Import(ACF):", "wpsetting-class-package") . $key;
+                            $error_logs[] = esc_html__("Custom Field Import(ACF):", "wpsetting-class-package") . $key;
                         }
 
                         // ACFグループフィールドを更新
                         foreach ($group_fields as $group_key => $group_value) {
                             update_field($group_key, $group_value, $new_post_id);
-                            $error_logs[] = __("Custom Field Import(ACF GROUP):", "wpsetting-class-package") . $group_key;
+                            $error_logs[] = esc_html__("Custom Field Import(ACF GROUP):", "wpsetting-class-package") . $group_key;
                         }
                     } else {
-                        $error_logs[] = "ID " . $new_post_id . __(": ACF or SCF is not installed", "wpsetting-class-package");
+                        $error_logs[] = "ID " . $new_post_id . esc_html__(": ACF or SCF is not installed", "wpsetting-class-package");
                     }
                 }
                 //コメントのインポート
                 if (isset($entry['comments'])) {
                     $result_count = $this->insert_comments_with_meta($entry['comments'], $new_post_id, $import_mode === "update");
-                    $error_logs[] = $result_count . __("comment item has been registered.", "wpsetting-class-package");
+                    $error_logs[] = $result_count . esc_html__("comment item has been registered.", "wpsetting-class-package");
                 }
             }
 
@@ -293,7 +293,7 @@ class ItmarDbAction
         if (is_null($file)) {
             return array(
                 "status" => 'error',
-                "message" => __("File not found (file name:", "wpsetting-class-package") . $file_name . ")",
+                "message" => esc_html__("File not found (file name:", "wpsetting-class-package") . $file_name . ")",
             );
         }
 
@@ -306,7 +306,7 @@ class ItmarDbAction
             $attachment_id = $this->get_attachment_id_by_file_path($dest_path);
             if ($attachment_id) {
                 $result = 'success';
-                $message = __("Processing stopped due to existing file found (media ID:", "wpsetting-class-package") . $attachment_id . ")";
+                $message = esc_html__("Processing stopped due to existing file found (media ID:", "wpsetting-class-package") . $attachment_id . ")";
             }
         } else {
             // wp_handle_upload の前準備
@@ -334,10 +334,10 @@ class ItmarDbAction
 
                 // 成功時のレスポンス
                 $result = 'success';
-                $message  = __("File uploaded", "wpsetting-class-package");
+                $message  = esc_html__("File uploaded", "wpsetting-class-package");
             } else {
                 $result = 'error';
-                $message  = __("Failed to upload file", "wpsetting-class-package");
+                $message  = esc_html__("Failed to upload file", "wpsetting-class-package");
             }
         }
 
@@ -346,13 +346,13 @@ class ItmarDbAction
         if ($attachment_id) {
             if ($media_type === 'thumbnail') {
                 set_post_thumbnail($post_id, $attachment_id);
-                $message = __('Upload thumbnail: ', "wpsetting-class-package") . $message;
+                $message = esc_html__('Upload thumbnail: ', "wpsetting-class-package") . $message;
             } elseif ($media_type === 'content') {
-                $message = __('Uploading in-content media: ', "wpsetting-class-package") . $message;
+                $message = esc_html__('Uploading in-content media: ', "wpsetting-class-package") . $message;
             } elseif ($media_type === 'acf_field') {
                 if (!empty($acf_field)) {
                     update_field($acf_field, $attachment_id, $post_id);
-                    $message = __('Uploading acf media: ', "wpsetting-class-package") . $message;
+                    $message = esc_html__('Uploading acf media: ', "wpsetting-class-package") . $message;
                 }
             }
         }
@@ -389,7 +389,7 @@ class ItmarDbAction
     public function get_post_type_label($post_type)
     {
         $post_type_object = get_post_type_object($post_type);
-        return $post_type_object ? $post_type_object->label : __('Unregistered Post Types', 'wpsetting-class-package');
+        return $post_type_object ? $post_type_object->label : esc_html__('Unregistered Post Types', 'wpsetting-class-package');
     }
 
     //WordPress のメディアライブラリからファイルのメディア ID を取得する関数

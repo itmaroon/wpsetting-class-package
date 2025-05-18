@@ -83,7 +83,7 @@ class ItmarRevisionClass
     {
         add_meta_box(
             'custom_revisions_meta',
-            __("Revision Settings", "wpsetting-class-package"),
+            esc_html__("Revision Settings", "wpsetting-class-package"),
             array($this, 'render_revisions_meta_box'),
             'post',
             'side',
@@ -107,9 +107,9 @@ class ItmarRevisionClass
         $revision_limit = is_numeric($custom_revisions) ? $custom_revisions : $this->current_revision_limit;
         $revision_limit = $revision_limit == -1 ? "" : $revision_limit;
         // 入力フィールドを表示
-        echo '<label for="custom_revisions_count">' . __("Maximum number of revisions for this post", "wpsetting-class-package") . ' </label>';
+        echo '<label for="custom_revisions_count">' . esc_html__("Maximum number of revisions for this post", "wpsetting-class-package") . ' </label>';
         echo '<input type="number" id="custom_revisions_count" name="custom_revisions_count" value="' . esc_attr($revision_limit) . '" min="0" style="width:100%" />';
-        echo '<p class="description">' . __("If left blank, there is no limit.", "wpsetting-class-package") . '</p>';
+        echo '<p class="description">' . esc_html__("If left blank, there is no limit.", "wpsetting-class-package") . '</p>';
     }
 
     /**
@@ -177,7 +177,7 @@ class ItmarRevisionClass
                             _e('Do not save', 'wpsetting-class-package');
                         } else {
                             printf(
-                                __('Save up to %d revisions', 'wpsetting-class-package'),
+                                esc_html__('Save up to %d revisions', 'wpsetting-class-package'),
                                 esc_html($revisions_setting)
                             );
                         }
