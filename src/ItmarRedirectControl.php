@@ -29,7 +29,16 @@ class ItmarRedirectControl
 
     public function maybe_apply_redirect()
     {
+        //ログインユーザーが管理者であること
         if (!current_user_can('manage_options')) return;
+
+        // nonceで想定外のフォームのsubmitを処理しない
+        if (
+            !isset($_POST['_wpnonce']) ||
+            !wp_verify_nonce($_POST['_wpnonce'], 'itmar_setting_nonce')
+        ) {
+            return;
+        }
 
         // 設定の保存リクエスト時のみ動作
         if (isset($_POST['submit'])) {
@@ -123,17 +132,17 @@ class ItmarRedirectControl
 
 ?>
         <h2><?php
-            _e('Redirect Settings', 'wpsetting-class-package');
+            esc_html_e('Redirect Settings', 'wpsetting-class-package');
             ?></h2>
         <table class="form-table">
             <tr>
-                <th scope="row"><?php _e('Redirecting from the domain root URL', 'wpsetting-class-package'); ?></th>
+                <th scope="row"><?php esc_html_e('Redirecting from the domain root URL', 'wpsetting-class-package'); ?></th>
                 <td>
                     <label>
                         <input type="checkbox" name="<?php echo esc_attr($this->redirect_option); ?>" value="1" <?php checked($enabled, 1); ?>>
-                        <?php _e('Redirect the domain root URL to this site', 'wpsetting-class-package'); ?>
+                        <?php esc_html_e('Redirect the domain root URL to this site', 'wpsetting-class-package'); ?>
                     </label>
-                    <p class="description"><?php _e('If this site is installed on a subdomain, it will be accessible at the root domain URL.', 'wpsetting-class-package'); ?></p>
+                    <p class="description"><?php esc_html_e('If this site is installed on a subdomain, it will be accessible at the root domain URL.', 'wpsetting-class-package'); ?></p>
                 </td>
             </tr>
         </table>
@@ -146,7 +155,7 @@ class ItmarRedirectControl
         if (get_option('itmar_permission_error')) {
         ?>
             <div class="notice notice-error is-dismissible">
-                <p><?php _e('Failed to create index.php. The file already exists or insufficient permissions. Please remove index.php manually if you want to enable redirect.', 'wpsetting-class-package'); ?></p>
+                <p><?php esc_html_e('Failed to create index.php. The file already exists or insufficient permissions. Please remove index.php manually if you want to enable redirect.', 'wpsetting-class-package'); ?></p>
             </div>
 <?php
             delete_option('itmar_permission_error'); // 表示後に削除
