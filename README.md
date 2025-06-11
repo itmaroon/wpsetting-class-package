@@ -21,6 +21,9 @@ class ItmarDbAction
 
 ## 変更履歴
 
+= 1.3.0 =  
+ItmarDbCacheクラスを新たに加えた
+
 = 1.2.0 =  
 ItmarDbActionクラスを新たに加えた
 
@@ -262,6 +265,124 @@ array(
     'meta'               => $meta_formatted // メタデータを "meta" に格納
 );
 ```
+
+### 名前空間・クラス  
+\Itmar\WpSettingClassPackage\ItmarDbCache
+
+#### クラスの概要  
+`ItmarDbCache` は `$wpdb` を用いた WordPress の DB 操作にキャッシュ機構を付加するためのユーティリティクラスです。Plugin Check で警告されがちな直接DB呼び出しに対し、キャッシュ処理 (`wp_cache_get` / `wp_cache_set` / `wp_cache_delete`) を適切に加えることで、パフォーマンスとコード品質を両立させます。
+
+---
+
+#### メソッドの説明  
+
+---
+
+### `get_var_cached($sql, $cache_key, $expire = 3600)`  
+SQL文字列を実行し、結果をキャッシュ付きで1行1列取得する。
+
+##### 引数  
+- `string $sql` : 実行するSQL（`$wpdb->prepare()`済み推奨）  
+- `string $cache_key` : キャッシュキー  
+- `int $expire` : キャッシュの有効期間（秒）
+
+##### 戻り値  
+- `mixed` : 結果行の1カラム目の値
+
+##### 使用例  
+```php
+$sql = $wpdb->prepare("SHOW TABLES LIKE %s", $table_name);
+$result = ItmarDbCache::get_var_cached($sql, 'table_exists_' . md5($table_name));
+```
+
+---
+
+### `get_row_cached($sql, $cache_key, $expire = 3600, $output = ARRAY_A)`  
+SQL文字列を実行し、1行のデータをキャッシュ付きで取得する。
+
+##### 引数  
+- `string $sql` : 実行するSQL  
+- `string $cache_key` : キャッシュキー  
+- `int $expire` : キャッシュの有効期間（秒）  
+- `string $output` : 返却形式。`OBJECT`, `ARRAY_A`, `ARRAY_N` のいずれか（デフォルト：`ARRAY_A`）
+
+##### 戻り値  
+- `mixed` : 1行の結果データ
+
+##### 使用例  
+```php
+$sql = $wpdb->prepare("SELECT * FROM {$table} WHERE token = %s", $token);
+$row = ItmarDbCache::get_row_cached($sql, 'row_token_' . md5($token));
+```
+
+---
+
+### `update_and_clear_cache($table, $data, $where, ?array $data_format = null, ?array $where_format = null, array $cache_keys = [])`  
+レコードを更新し、指定したキャッシュキーのキャッシュを削除する。
+
+##### 引数  
+- `string $table` : 対象テーブル名  
+- `array $data` : 更新データ  
+- `array $where` : WHERE 条件  
+- `?array $data_format` : 更新データのフォーマット（`%s`など）  
+- `?array $where_format` : WHERE 条件のフォーマット  
+- `array $cache_keys` : 削除対象のキャッシュキー配列
+
+##### 戻り値  
+- `int|false` : 成功時は更新された行数、失敗時は false
+
+##### 使用例  
+```php
+$result = ItmarDbCache::update_and_clear_cache(
+    $wpdb->users,
+    ['user_pass' => $hashed_password],
+    ['ID' => $user_id],
+    ['%s'],
+    ['%d'],
+    ['user_cache_' . $user_id]
+);
+```
+
+---
+
+### `delete_and_clear_cache($table, $where, ?array $where_format = null, array $cache_keys = [])`  
+レコードを削除し、指定したキャッシュキーのキャッシュを削除する。
+
+##### 引数  
+- `string $table` : 対象テーブル名  
+- `array $where` : WHERE 条件  
+- `?array $where_format` : WHERE 条件のフォーマット  
+- `array $cache_keys` : 削除対象のキャッシュキー配列
+
+##### 戻り値  
+- `int|false` : 削除された行数、または失敗時は false
+
+##### 使用例  
+```php
+$result = ItmarDbCache::delete_and_clear_cache(
+    $table,
+    ['id' => $row['id']],
+    ['%d'],
+    ['row_token_' . md5($row['token'])]
+);
+```
+
+---
+
+### `set_cache_group($group)`  
+キャッシュのグループ名を変更する。
+
+##### 引数  
+- `string $group` : グループ名（デフォルトは `itmar_cache`）
+
+##### 戻り値  
+- なし
+
+##### 使用例  
+```php
+ItmarDbCache::set_cache_group('my_plugin_group');
+```
+
 
   
 

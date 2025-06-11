@@ -78,10 +78,12 @@ class ItmarRedirectControl
 
         // すでに index.php が存在する場合はエラー
         if (file_exists($this->index_php_path)) {
-            $needle = "require __DIR__ . '/{$subdir}/wp-blog-header.php';";
+            //$needle = "require __DIR__ . '/{$subdir}/wp-blog-header.php';";
             $contents = file_get_contents($this->index_php_path);
 
-            if (strpos($contents, $needle) !== false) {
+            $pattern = '/require\s+__DIR__\s*\.\s*[\'"]\/\s*' . preg_quote($subdir, '/') . '\s*\/wp-blog-header\.php[\'"];/';
+            if (preg_match($pattern, $contents)) {
+
                 // ファイルが存在し、require 文も含まれている
                 return true;
             } else {
