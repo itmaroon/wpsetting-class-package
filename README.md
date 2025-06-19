@@ -21,6 +21,9 @@ class ItmarDbAction
 
 ## 変更履歴
 
+= 1.3.1 =  
+ItmarDbActionクラスのset_mediaメソッドの$file_path引数に配列がセットされたときの処理を新たに加えた
+
 = 1.3.0 =  
 ItmarDbCacheクラスを新たに加えた
 
@@ -144,6 +147,7 @@ const response = await fetch(ajaxUrl, {
 #### メソッドの説明
 set_media($media_array, $post_id, $file_path, $media_type)   
 $media_arrayで渡されたアップロードファイルの配列から、ファイル名が$file_pathと一致するものを選び出し、メディアライブラリに登録するとともに、$post_idのIDをもつ投稿に関連付ける。関連付けの方法は次の３とおり。
+$file_pathが配列で複数のメディアのパスを渡した場合にも対応する。
 - アイキャッチ画像
 $media_typeがthumbnail
 - ACFメディア

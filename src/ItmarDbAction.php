@@ -176,6 +176,17 @@ class ItmarDbAction
                                     'key' => $key,
                                     'value' => $value
                                 ];
+                            } else if (is_array($value)) {
+                                $image_arr = [];
+                                foreach ($value as $elm) {
+                                    if (is_string($elm) && preg_match('/exported_media\/(.+?\.[a-zA-Z0-9]+)/u', $elm, $matches)) { //メディアフィールド
+                                        $image_arr[] = $elm;
+                                    }
+                                }
+                                $acf_mediaURLs[] = [
+                                    'key' => $key,
+                                    'value' => $image_arr
+                                ];
                             }
                         }
                         $group_fields = []; // グループフィールドを格納する配列
@@ -232,7 +243,7 @@ class ItmarDbAction
             foreach ($content_mediaURLs as $content_path) {
                 if ($content_path) {
                     $media_result = $this->set_media($uploaded_medias, $new_post_id, $content_path, "content");
-                    $updated_content = str_replace($content_path, $media_result['attachment_url'], $updated_content);
+                    $updated_content = str_replace($content_path, $media_result['attachment_url'][0], $updated_content);
                     $error_logs[] = $media_result['message'];
                 }
             }
@@ -275,83 +286,101 @@ class ItmarDbAction
         // 一時的に GD に切り替えるフィルターを追加
         add_filter('wp_image_editors', [$this, 'force_gd_editor']);
 
+        //$file_pathが配列の時に備えてすべて配列で対応
+        $file_names = [];
         //acf_fieldのときはオブジェクトが来るのでそれに対応
         if ($media_type === 'acf_field') {
-            $file_name = basename($file_path['value']);
             $acf_field = $file_path['key'];
-        } else {
-            $file_name = basename($file_path);
-        }
-
-        // `name` キーに `$file_name` が一致する要素を検索
-        $matched_files = array_filter($media_array, function ($file) use ($file_name) {
-            return $file['name'] === $file_name;
-        });
-        // 1つだけ取得
-        $file = reset($matched_files) ?: null;
-        //取得できなければ終了
-        if (is_null($file)) {
-            return array(
-                "status" => 'error',
-                "message" => esc_html__("File not found (file name:", "wpsetting-class-package") . $file_name . ")",
-            );
-        }
-
-        $upload_dir = wp_upload_dir();
-        $dest_path = $upload_dir['path'] . '/' . basename($file['name']);
-
-
-        if (file_exists($dest_path)) {
-            //既に同じ名前のファイルが存在したらアップロードしない
-            $attachment_id = $this->get_attachment_id_by_file_path($dest_path);
-            if ($attachment_id) {
-                $result = 'success';
-                $message = esc_html__("Processing stopped due to existing file found (media ID:", "wpsetting-class-package") . $attachment_id . ")";
+            $acf_paths = $file_path['value'];
+            if (is_array($acf_paths)) { //$file_pathが配列の時（gallery対応）
+                foreach ($acf_paths as $acf_path) {
+                    $file_names[] = basename($acf_path);
+                }
+            } else {
+                $file_names[] = basename($acf_paths);
             }
         } else {
-            // wp_handle_upload の前準備
-            require_once(ABSPATH . 'wp-admin/includes/file.php');
-            require_once(ABSPATH . 'wp-admin/includes/image.php');
+            $file_names[] = basename($file_path);
+        }
 
-            $upload_overrides = array('test_form' => false);
-            $movefile = wp_handle_upload($file, $upload_overrides);
-
-            if ($movefile && !isset($movefile['error'])) {
-                $dest_path = $movefile['file'];
-                $file_name = isset($file['name']) ? $file['name'] : basename($dest_path);
-                $filetype = wp_check_filetype(basename($dest_path), null);
-
-                $attachment = array(
-                    'post_mime_type' => $filetype['type'],
-                    'post_title'     => sanitize_file_name($file_name),
-                    'post_content'   => '',
-                    'post_status'    => 'inherit'
+        //$attachment_idをストックする配列
+        $attachment_ids = [];
+        foreach ($file_names as $file_name) {
+            // `name` キーに `$file_name` が一致する要素を検索
+            $matched_files = array_filter($media_array, function ($file) use ($file_name) {
+                return $file['name'] === $file_name;
+            });
+            // 1つだけ取得
+            $file = reset($matched_files) ?: null;
+            //取得できなければ終了
+            if (is_null($file)) {
+                return array(
+                    "status" => 'error',
+                    "message" => esc_html__("File not found (file name:", "wpsetting-class-package") . $file_name . ")",
                 );
+            }
 
-                $attachment_id = wp_insert_attachment($attachment, $dest_path);
-                $attach_data = wp_generate_attachment_metadata($attachment_id, $dest_path);
-                wp_update_attachment_metadata($attachment_id, $attach_data);
+            $upload_dir = wp_upload_dir();
+            $dest_path = $upload_dir['path'] . '/' . basename($file['name']);
 
-                // 成功時のレスポンス
-                $result = 'success';
-                $message  = esc_html__("File uploaded", "wpsetting-class-package");
+            if (file_exists($dest_path)) {
+                //既に同じ名前のファイルが存在したらアップロードしない
+                $attachment_id = $this->get_attachment_id_by_file_path($dest_path);
+                if ($attachment_id) {
+                    $result = 'success';
+                    $message = esc_html__("Processing stopped due to existing file found (media ID:", "wpsetting-class-package") . $attachment_id . ")";
+                }
+                $attachment_ids[] = $attachment_id;
             } else {
-                $result = 'error';
-                $message  = esc_html__("Failed to upload file", "wpsetting-class-package");
+                // wp_handle_upload の前準備
+                require_once(ABSPATH . 'wp-admin/includes/file.php');
+                require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+                $upload_overrides = array('test_form' => false);
+                $movefile = wp_handle_upload($file, $upload_overrides);
+
+                if ($movefile && !isset($movefile['error'])) {
+                    $dest_path = $movefile['file'];
+                    $file_name = isset($file['name']) ? $file['name'] : basename($dest_path);
+                    $filetype = wp_check_filetype(basename($dest_path), null);
+
+                    $attachment = array(
+                        'post_mime_type' => $filetype['type'],
+                        'post_title'     => sanitize_file_name($file_name),
+                        'post_content'   => '',
+                        'post_status'    => 'inherit'
+                    );
+
+                    $attachment_id = wp_insert_attachment($attachment, $dest_path);
+                    $attach_data = wp_generate_attachment_metadata($attachment_id, $dest_path);
+                    wp_update_attachment_metadata($attachment_id, $attach_data);
+                    $attachment_ids[] = $attachment_id;
+                    // 成功時のレスポンス
+                    $result = 'success';
+                    $message  = esc_html__("File uploaded", "wpsetting-class-package");
+                } else {
+                    $result = 'error';
+                    $message  = esc_html__("Failed to upload file", "wpsetting-class-package");
+                }
             }
         }
 
         // 投稿データにメディア情報を反映
-        $attachment_url = wp_get_attachment_url($attachment_id);
-        if ($attachment_id) {
+
+        if ($attachment_ids) {
             if ($media_type === 'thumbnail') {
-                set_post_thumbnail($post_id, $attachment_id);
+                set_post_thumbnail($post_id, $attachment_ids[0]);
                 $message = esc_html__('Upload thumbnail: ', "wpsetting-class-package") . $message;
             } elseif ($media_type === 'content') {
                 $message = esc_html__('Uploading in-content media: ', "wpsetting-class-package") . $message;
             } elseif ($media_type === 'acf_field') {
                 if (!empty($acf_field)) {
-                    update_field($acf_field, $attachment_id, $post_id);
+                    if (count($attachment_ids) > 1) {
+                        update_field($acf_field, $attachment_ids, $post_id);
+                    } else {
+                        update_field($acf_field, $attachment_ids[0], $post_id);
+                    }
+
                     $message = esc_html__('Uploading acf media: ', "wpsetting-class-package") . $message;
                 }
             }
@@ -359,12 +388,17 @@ class ItmarDbAction
 
         // フィルターを元に戻す
         remove_filter('wp_image_editors', [$this, 'force_gd_editor']);
+        //呼び出しもとに返すためにURLを取得
+        $attachment_urls = [];
+        foreach ($attachment_ids as $attachment_id) {
+            $attachment_urls[] = wp_get_attachment_url($attachment_id);
+        }
 
         return array(
             "status" => $result,
             "message" => $message,
-            "attachment_id" => $attachment_id,
-            "attachment_url" => $attachment_url,
+            "attachment_id" => $attachment_ids,
+            "attachment_url" => $attachment_urls,
         );
     }
 
