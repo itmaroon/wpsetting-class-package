@@ -147,6 +147,10 @@ class ItmarDbAction
                     set_post_thumbnail($new_post_id, $entry['thumbnail_id']);
                 }
                 // **ターム（カテゴリー・タグ・カスタム分類）を登録**
+                // 1) 投稿タイプの全タクソノミーを取得して一括クリア
+                $all_taxes = get_object_taxonomies(get_post_type($new_post_id));
+                wp_delete_object_term_relationships($new_post_id, $all_taxes);
+                // 2) 渡された terms をセット
                 foreach ($entry['terms'] as $taxonomy => $terms) {
                     $tax_result = wp_set_object_terms($new_post_id, $terms, $taxonomy);
                     //エラーの場合はエラーを記録
