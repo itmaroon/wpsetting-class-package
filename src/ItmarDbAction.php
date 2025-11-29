@@ -241,7 +241,10 @@ class ItmarDbAction
             if ($thumbnail_path) {
                 $media_result = $this->set_media($uploaded_medias, $new_post_id, $thumbnail_path, "thumbnail");
                 $error_logs[] = $media_result['message'];
+            } else {
+                delete_post_thumbnail($new_post_id);
             }
+
             //コンテンツ内画像
             $updated_content = $post_content; //コンテンツを別の変数に置き換え
             foreach ($content_mediaURLs as $content_path) {
