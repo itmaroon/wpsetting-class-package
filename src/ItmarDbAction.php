@@ -241,7 +241,10 @@ class ItmarDbAction
             if ($thumbnail_path) {
                 $media_result = $this->set_media($uploaded_medias, $new_post_id, $thumbnail_path, "thumbnail");
                 $error_logs[] = $media_result['message'];
-            } else {
+            }
+
+            //サムネイル消去
+            if (is_null($thumbnail_path) && !isset($entry['thumbnail_id'])) {
                 delete_post_thumbnail($new_post_id);
             }
 

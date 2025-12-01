@@ -20,6 +20,9 @@ class ItmarSEOSettings
 class ItmarDbAction
 
 ## 変更履歴
+= 1.3.4 =  
+ItmarDbActionクラスのjson_import_dataメソッドでサムネイルとメディアとの紐づけを切るロジックを修正。
+
 = 1.3.3 =  
 ItmarDbActionクラスのjson_import_dataメソッドでサムネイル登録の際、nullがわたった場合にメディアとの紐づけを切るようにした。
 
