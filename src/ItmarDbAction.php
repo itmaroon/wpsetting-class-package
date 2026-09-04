@@ -17,11 +17,18 @@ class ItmarDbAction
         //親IDの初期化
         $parent_id = 0;
 
+        // リビジョン処理後にも親投稿のアイキャッチを保証するため保持する。
+        $parent_thumbnail = null;
+
         //リビジョンの生成を止めてから挿入
         add_filter('wp_save_post_revision_check_for_changes', '__return_false');
         add_filter('wp_revisions_to_keep', '__return_zero', 10, 2);
 
         foreach ($groupArr as $entry) {
+            // 前の投稿・リビジョンのIDを失敗時に流用しない。
+            $new_post_id = 0;
+            $acf_mediaURLs = [];
+
             //JSONのデコード結果から情報を取り出し
             $post_id = isset($entry['ID']) ? intval($entry['ID']) : 0;
             $post_title = isset($entry['title']) ? esc_html($entry['title']) : '';
@@ -35,7 +42,7 @@ class ItmarDbAction
             //投稿日付が将来日付でpublishの時はステータスを変更
             $entry_time = strtotime($post_date);
             $now = current_time('timestamp'); // WordPressの現在時刻（タイムゾーン考慮）
-            if ($entry_time !== false && $entry_time > $now && $post_status = 'publish') {
+            if ($entry_time !== false && $entry_time > $now && $post_status === 'publish') {
                 $post_status = 'future';
             }
 
@@ -131,6 +138,11 @@ class ItmarDbAction
                 }
             }
 
+            // 投稿作成に失敗したレコードでは、直前の投稿IDを使わず処理を終える。
+            if (! $new_post_id || is_wp_error($new_post_id)) {
+                continue;
+            }
+
             //親データとしてIDをキープとログの記録
             if ($post_status != "inherit") {
                 $parent_id = $new_post_id;
@@ -172,7 +184,6 @@ class ItmarDbAction
                 if (isset($entry['acf_fields'])) {
                     if ($this->is_acf_active()) { //acfのインストールチェック
                         $acf_fields = $entry['acf_fields'];
-                        $acf_mediaURLs = [];
                         //メディアフィールドを探索し、メディアのURLを配列に格納
                         foreach ($acf_fields as $key => $value) {
                             if (is_string($value) && preg_match('/exported_media\/(.+?\.[a-zA-Z0-9]+)/u', $value, $matches)) { //メディアフィールド
@@ -187,10 +198,12 @@ class ItmarDbAction
                                         $image_arr[] = $elm;
                                     }
                                 }
-                                $acf_mediaURLs[] = [
-                                    'key' => $key,
-                                    'value' => $image_arr
-                                ];
+                                if (! empty($image_arr)) {
+                                    $acf_mediaURLs[] = [
+                                        'key' => $key,
+                                        'value' => $image_arr
+                                    ];
+                                }
                             }
                         }
                         $group_fields = []; // グループフィールドを格納する配列
@@ -241,6 +254,20 @@ class ItmarDbAction
             if ($thumbnail_path) {
                 $media_result = $this->set_media($uploaded_medias, $new_post_id, $thumbnail_path, "thumbnail");
                 $error_logs[] = $media_result['message'];
+
+                if ($media_result['status'] !== 'success') {
+                    throw new \RuntimeException($media_result['message']);
+                }
+
+                if (
+                    $post_type !== 'revision' &&
+                    ! empty($media_result['attachment_id'][0])
+                ) {
+                    $parent_thumbnail = [
+                        'post_id'       => (int) $new_post_id,
+                        'attachment_id' => (int) $media_result['attachment_id'][0],
+                    ];
+                }
             }
 
             //サムネイル消去
@@ -253,8 +280,13 @@ class ItmarDbAction
             foreach ($content_mediaURLs as $content_path) {
                 if ($content_path) {
                     $media_result = $this->set_media($uploaded_medias, $new_post_id, $content_path, "content");
-                    $updated_content = str_replace($content_path, $media_result['attachment_url'][0], $updated_content);
+                    if ($media_result['status'] === 'success' && ! empty($media_result['attachment_url'][0])) {
+                        $updated_content = str_replace($content_path, $media_result['attachment_url'][0], $updated_content);
+                    }
                     $error_logs[] = $media_result['message'];
+                    if ($media_result['status'] !== 'success') {
+                        throw new \RuntimeException($media_result['message']);
+                    }
                 }
             }
             // 投稿を更新
@@ -268,6 +300,9 @@ class ItmarDbAction
                 if ($acf_path) {
                     $media_result = $this->set_media($uploaded_medias, $new_post_id, $acf_path, "acf_field");
                     $error_logs[] = $media_result['message'];
+                    if ($media_result['status'] !== 'success') {
+                        throw new \RuntimeException($media_result['message']);
+                    }
                 }
             }
 
@@ -282,6 +317,24 @@ class ItmarDbAction
                 ];
             }
         }
+
+        // 1グループ内のリビジョン処理などで親投稿のメタが変更されても、
+        // 最終状態では必ずエクスポート元のアイキャッチを保持させる。
+        if ($parent_thumbnail) {
+            $thumbnail_post_id = $parent_thumbnail['post_id'];
+            $thumbnail_id      = $parent_thumbnail['attachment_id'];
+
+            if ((int) get_post_thumbnail_id($thumbnail_post_id) !== $thumbnail_id) {
+                $thumbnail_set = set_post_thumbnail($thumbnail_post_id, $thumbnail_id);
+
+                if (false === $thumbnail_set && (int) get_post_thumbnail_id($thumbnail_post_id) !== $thumbnail_id) {
+                    $error_logs[] = esc_html__('Failed to preserve thumbnail after importing revisions (media ID:', "wpsetting-class-package") . $thumbnail_id . ')';
+                } else {
+                    $error_logs[] = esc_html__('Thumbnail restored after importing revisions (media ID:', "wpsetting-class-package") . $thumbnail_id . ')';
+                }
+            }
+        }
+
         //リビジョンの生成を戻す
         remove_filter('wp_save_post_revision_check_for_changes', '__return_false');
         remove_filter('wp_revisions_to_keep', '__return_zero', 10);
@@ -297,57 +350,90 @@ class ItmarDbAction
         add_filter('wp_image_editors', [$this, 'force_gd_editor']);
 
         //$file_pathが配列の時に備えてすべて配列で対応
-        $file_names = [];
+        $media_paths = [];
         //acf_fieldのときはオブジェクトが来るのでそれに対応
         if ($media_type === 'acf_field') {
             $acf_field = $file_path['key'];
             $acf_paths = $file_path['value'];
             if (is_array($acf_paths)) { //$file_pathが配列の時（gallery対応）
                 foreach ($acf_paths as $acf_path) {
-                    $file_names[] = basename($acf_path);
+                    $media_paths[] = $acf_path;
                 }
             } else {
-                $file_names[] = basename($acf_paths);
+                $media_paths[] = $acf_paths;
             }
         } else {
-            $file_names[] = basename($file_path);
+            $media_paths[] = $file_path;
         }
 
         //$attachment_idをストックする配列
         $attachment_ids = [];
-        foreach ($file_names as $file_name) {
-            // `name` キーに `$file_name` が一致する要素を検索
-            $matched_files = array_filter($media_array, function ($file) use ($file_name) {
-                return $file['name'] === $file_name;
-            });
-            // 1つだけ取得
-            $file = reset($matched_files) ?: null;
+        $result = 'error';
+        $message = esc_html__("No media files were provided", "wpsetting-class-package");
+        foreach ($media_paths as $media_path) {
+            $archive_path = ltrim(str_replace('\\', '/', $media_path), '/');
+            $file_name = basename($archive_path);
+
+            // 新形式では ZIP 内の完全なパスで照合し、同名ファイルを区別する。
+            $file = isset($media_array[$archive_path]) && is_array($media_array[$archive_path])
+                ? $media_array[$archive_path]
+                : null;
+
+            // 数値添字の配列および旧形式との互換性を維持する。
+            if (is_null($file)) {
+                $matched_files = array_filter($media_array, function ($candidate) use ($archive_path) {
+                    $file_archive_path = isset($candidate['archive_path'])
+                        ? ltrim(str_replace('\\', '/', $candidate['archive_path']), '/')
+                        : '';
+                    return $file_archive_path === $archive_path;
+                });
+                $file = reset($matched_files) ?: null;
+            }
+
+            // 旧形式には archive_path がない可能性があるため、ファイル名でも照合する。
+            if (is_null($file) && strpos(substr($archive_path, strlen('exported_media/')), '/') === false) {
+                $matched_files = array_filter($media_array, function ($file) use ($file_name) {
+                    return $file['name'] === $file_name;
+                });
+                $file = reset($matched_files) ?: null;
+            }
+
             //取得できなければ終了
             if (is_null($file)) {
+                remove_filter('wp_image_editors', [$this, 'force_gd_editor']);
                 return array(
                     "status" => 'error',
                     "message" => esc_html__("File not found (file name:", "wpsetting-class-package") . $file_name . ")",
+                    "attachment_id" => [],
+                    "attachment_url" => [],
                 );
             }
 
             $upload_dir = wp_upload_dir();
             $dest_path = $upload_dir['path'] . '/' . basename($file['name']);
+            $attachment_id = $this->get_attachment_id_by_archive_path(
+                $archive_path,
+                $media_type === 'thumbnail'
+            );
 
-            if (file_exists($dest_path)) {
-                //既に同じ名前のファイルが存在したらアップロードしない
+            // 旧形式では、従来どおり現在のアップロード先にある同名ファイルも再利用する。
+            if (! $attachment_id && strpos(substr($archive_path, strlen('exported_media/')), '/') === false && file_exists($dest_path)) {
                 $attachment_id = $this->get_attachment_id_by_file_path($dest_path);
-                if ($attachment_id) {
-                    $result = 'success';
-                    $message = esc_html__("Processing stopped due to existing file found (media ID:", "wpsetting-class-package") . $attachment_id . ")";
-                }
+            }
+
+            if ($attachment_id) {
+                $result = 'success';
+                $message = esc_html__("Processing stopped due to existing file found (media ID:", "wpsetting-class-package") . $attachment_id . ")";
                 $attachment_ids[] = $attachment_id;
             } else {
-                // wp_handle_upload の前準備
+                // wp_handle_upload / wp_handle_sideload の前準備
                 require_once(ABSPATH . 'wp-admin/includes/file.php');
                 require_once(ABSPATH . 'wp-admin/includes/image.php');
 
                 $upload_overrides = array('test_form' => false);
-                $movefile = wp_handle_upload($file, $upload_overrides);
+                $movefile = ! empty($file['sideload'])
+                    ? wp_handle_sideload($file, $upload_overrides)
+                    : wp_handle_upload($file, $upload_overrides);
 
                 if ($movefile && !isset($movefile['error'])) {
                     $dest_path = $movefile['file'];
@@ -361,16 +447,24 @@ class ItmarDbAction
                         'post_status'    => 'inherit'
                     );
 
-                    $attachment_id = wp_insert_attachment($attachment, $dest_path);
+                    $attachment_id = wp_insert_attachment($attachment, $dest_path, 0, true);
+                    if (is_wp_error($attachment_id)) {
+                        wp_delete_file($dest_path);
+                        $result = 'error';
+                        $message = esc_html__("Failed to register attachment", "wpsetting-class-package");
+                        continue;
+                    }
                     $attach_data = wp_generate_attachment_metadata($attachment_id, $dest_path);
                     wp_update_attachment_metadata($attachment_id, $attach_data);
+                    update_post_meta($attachment_id, '_itmar_post_migration_source_path', $archive_path);
                     $attachment_ids[] = $attachment_id;
                     // 成功時のレスポンス
                     $result = 'success';
                     $message  = esc_html__("File uploaded", "wpsetting-class-package");
                 } else {
                     $result = 'error';
-                    $message  = esc_html__("Failed to upload file", "wpsetting-class-package");
+                    $upload_error = isset($movefile['error']) ? ': ' . $movefile['error'] : '';
+                    $message  = esc_html__("Failed to upload file", "wpsetting-class-package") . $upload_error;
                 }
             }
         }
@@ -379,8 +473,16 @@ class ItmarDbAction
 
         if ($attachment_ids) {
             if ($media_type === 'thumbnail') {
-                set_post_thumbnail($post_id, $attachment_ids[0]);
-                $message = esc_html__('Upload thumbnail: ', "wpsetting-class-package") . $message;
+                $thumbnail_id  = $attachment_ids[0];
+                $thumbnail_set = set_post_thumbnail($post_id, $thumbnail_id);
+
+                // 同じIDが既に設定済みの場合も set_post_thumbnail() は false を返す。
+                if (false === $thumbnail_set && (int) get_post_thumbnail_id($post_id) !== (int) $thumbnail_id) {
+                    $result  = 'error';
+                    $message = esc_html__('Failed to set thumbnail (media ID:', "wpsetting-class-package") . $thumbnail_id . ')';
+                } else {
+                    $message = esc_html__('Upload thumbnail: ', "wpsetting-class-package") . $message;
+                }
             } elseif ($media_type === 'content') {
                 $message = esc_html__('Uploading in-content media: ', "wpsetting-class-package") . $message;
             } elseif ($media_type === 'acf_field') {
@@ -465,6 +567,59 @@ class ItmarDbAction
 
 
         return $attachment_id ? intval($attachment_id) : false;
+    }
+
+    // ZIP 内パスから、既に登録済みのメディア ID を取得する。
+    public function get_attachment_id_by_archive_path($archive_path, $require_image = false)
+    {
+        $archive_path = ltrim(str_replace('\\', '/', $archive_path), '/');
+        if (strpos($archive_path, 'exported_media/') !== 0) {
+            return false;
+        }
+
+        $relative_path = substr($archive_path, strlen('exported_media/'));
+        if ($relative_path === '' || preg_match('~(^|/)\.\.?(/|$)~', $relative_path)) {
+            return false;
+        }
+
+        $attachments = get_posts([
+            'post_type'      => 'attachment',
+            'post_status'    => 'inherit',
+            'meta_query'     => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+                'relation' => 'OR',
+                [
+                    'key'     => '_wp_attached_file',
+                    'value'   => $relative_path,
+                    'compare' => '=',
+                ],
+                [
+                    'key'     => '_itmar_post_migration_source_path',
+                    'value'   => $archive_path,
+                    'compare' => '=',
+                ],
+            ],
+            'numberposts'    => -1,
+            'fields'         => 'ids',
+        ]);
+
+        foreach ($attachments as $attachment_id) {
+            $attachment_id = intval($attachment_id);
+            $attached_file = get_attached_file($attachment_id);
+
+            // DBレコードだけ残った添付ファイルを再利用すると、本文画像や
+            // アイキャッチが欠落するため、実ファイルまで確認する。
+            if (! $attached_file || ! is_file($attached_file) || ! is_readable($attached_file)) {
+                continue;
+            }
+
+            if ($require_image && ! wp_attachment_is_image($attachment_id)) {
+                continue;
+            }
+
+            return $attachment_id;
+        }
+
+        return false;
     }
 
     //meta_key から field_XXXXXXX を取得

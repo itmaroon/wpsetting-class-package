@@ -20,6 +20,9 @@ class ItmarSEOSettings
 class ItmarDbAction
 
 ## 変更履歴
+= 1.3.5 =
+ItmarDbActionクラスをPost MigrationのサーバーサイドZIP処理に対応。ZIP内相対パスによるメディア識別、sideload、既存メディアの実体確認、アイキャッチ画像の保持およびメディア登録失敗時の処理を改善。
+
 = 1.3.4 =  
 ItmarDbActionクラスのjson_import_dataメソッドでサムネイルとメディアとの紐づけを切るロジックを修正。
 
