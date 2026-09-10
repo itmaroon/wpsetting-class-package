@@ -11,6 +11,10 @@ class ItmarSecuritySettings
     private $redirect_option = 'itmar_redirect_to_subdir';
     private $disable_author_archive_option = 'itmar_disable_author_archive';
     private $disable_xmlrpc_option = 'itmar_disable_xmlrpc';
+    /** カスタムログインURL経由で wp-login.php を読み込んだか。 */
+    private $via_custom_login = false;
+    /** 著者アーカイブ遮断により 404 を返すか。 */
+    private $force_404 = false;
 
     public static function get_instance()
     {
@@ -35,10 +39,14 @@ class ItmarSecuritySettings
 
         // ユーザー名漏洩防止
         add_filter('request', [$this, 'block_author_query']);
+        add_action('template_redirect', [$this, 'apply_forced_404'], 1);
         add_filter('redirect_canonical', [$this, 'disable_author_redirect'], 10, 2);
         add_filter('rest_endpoints', [$this, 'disable_rest_user_endpoint']);
         //XML-RPC 無効化
         add_filter('xmlrpc_enabled', [$this, 'disable_xmlrpc']);
+
+        // スラッグ衝突の通知
+        add_action('admin_notices', [$this, 'admin_notice_login_slug_error']);
     }
 
     /**
@@ -73,6 +81,7 @@ class ItmarSecuritySettings
             global $user_login, $error;
             $user_login = ''; // 空で定義
             $error = ''; // エラー変数も空定義
+            $this->via_custom_login = true; // block_default_login に経路を伝える
             require_once ABSPATH . 'wp-login.php';
             exit;
         }
@@ -80,6 +89,13 @@ class ItmarSecuritySettings
 
     /**
      * wp-login.php直アクセスをブロック
+     *
+     * カスタムURL経由かどうかはフラグで判定する。REQUEST_URI の文字列照合だと、
+     * スラッグに "login" を含めた瞬間に /wp-login.php 自身が一致してしまい、
+     * ブロックが丸ごと無効化される。
+     *
+     * GET だけでなく POST も塞ぐ。総当たり攻撃は wp-login.php へ直接 POST して
+     * くるため、GET だけ塞いでもログインURLを変えた意味がない。
      */
     public function block_default_login()
     {
@@ -88,17 +104,19 @@ class ItmarSecuritySettings
             return; // 設定されていない場合は通常動作
         }
 
-        $request_uri = $_SERVER['REQUEST_URI'];
-
-        // POST の場合は許容（ログイン処理など）
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // カスタムURL経由の読み込みは当然通す
+        if ($this->via_custom_login) {
             return;
         }
 
-        // wp-login.php への GET アクセスのみブロック
-        if (strpos($request_uri, 'wp-login.php') !== false && strpos($request_uri, $custom_slug) === false) {
-            wp_die(__('404 Not Found'), '', array('response' => 404));
+        // 認証以外の用途はフロント機能なので通す。
+        // postpass はパスワード保護記事のフォーム、logout はログアウト処理。
+        $action = isset($_REQUEST['action']) ? sanitize_key($_REQUEST['action']) : '';
+        if (in_array($action, array('postpass', 'logout'), true)) {
+            return;
         }
+
+        wp_die(esc_html__('404 Not Found', 'wpsetting-class-package'), '', array('response' => 404));
     }
 
     /**
@@ -153,15 +171,33 @@ class ItmarSecuritySettings
 
 
 
-    /** 著者アーカイブ防止 - クエリ段階 */
+    /**
+     * 著者アーカイブ防止 - クエリ段階
+     *
+     * ここで wp_die() すると素のエラー画面になり、テーマの 404 テンプレートを
+     * 経由しない。著者指定を落としたうえでフラグを立て、通常の 404 として扱う。
+     */
     public function block_author_query($query_vars)
     {
         $disable_author = get_option($this->disable_author_archive_option, 1);
 
         if ($disable_author && isset($query_vars['author'])) {
-            wp_die(esc_html__('404 Not Found', 'wpsetting-class-package'), '', array('response' => 404));
+            unset($query_vars['author']);
+            $this->force_404 = true;
         }
         return $query_vars;
+    }
+
+    /** テーマの 404 テンプレートで応答する */
+    public function apply_forced_404()
+    {
+        if (!$this->force_404) {
+            return;
+        }
+        global $wp_query;
+        $wp_query->set_404();
+        status_header(404);
+        nocache_headers();
     }
 
     /** 著者アーカイブ防止 - リダイレクト阻止 */
@@ -180,7 +216,9 @@ class ItmarSecuritySettings
     {
         $disable_author = get_option($this->disable_author_archive_option, 1);
 
-        if ($disable_author) {
+        // 塞ぐのは未ログインの列挙だけ。ログイン中も消すと、ブロックエディタの
+        // 投稿者パネルなど管理側の正当な利用まで壊れる。
+        if ($disable_author && !is_user_logged_in()) {
             unset($endpoints['/wp/v2/users']);
             unset($endpoints['/wp/v2/users/(?P<id>[\d]+)']);
         }
@@ -198,16 +236,106 @@ class ItmarSecuritySettings
         return $enabled;
     }
 
+    /**
+     * ログインスラッグが既存のURLと衝突しないか調べる。
+     *
+     * add_rewrite_rule を 'top' で登録するため、衝突したまま保存すると
+     * 該当ページが表示できなくなる。保存前に弾く。
+     *
+     * @return string|null 衝突理由。問題なければ null。
+     */
+    private function find_login_slug_conflict($slug)
+    {
+        $reserved = array(
+            'wp-admin',
+            'wp-login',
+            'wp-content',
+            'wp-includes',
+            'wp-json',
+            'feed',
+            'rss',
+            'rss2',
+            'atom',
+            'embed',
+            'trackback',
+            'page',
+            'comments',
+            'search',
+            'author',
+        );
+        if (in_array($slug, $reserved, true)) {
+            /* translators: %s: requested login slug. */
+            return sprintf(__('"%s" is reserved by WordPress.', 'wpsetting-class-package'), $slug);
+        }
+
+        $existing = get_page_by_path($slug, OBJECT, get_post_types(array('public' => true)));
+        if ($existing) {
+            /* translators: 1: requested login slug, 2: title of the conflicting content. */
+            return sprintf(__('"%1$s" is already used by the content "%2$s".', 'wpsetting-class-package'), $slug, $existing->post_title);
+        }
+
+        foreach (get_post_types(array('public' => true), 'objects') as $post_type) {
+            $rewrite = is_array($post_type->rewrite) ? ($post_type->rewrite['slug'] ?? '') : '';
+            $archive = is_string($post_type->has_archive) ? $post_type->has_archive : '';
+            if ($slug === $rewrite || $slug === $archive) {
+                /* translators: 1: requested login slug, 2: post type name. */
+                return sprintf(__('"%1$s" is already used by the post type "%2$s".', 'wpsetting-class-package'), $slug, $post_type->name);
+            }
+        }
+
+        foreach (get_taxonomies(array('public' => true), 'objects') as $taxonomy) {
+            $rewrite = is_array($taxonomy->rewrite) ? ($taxonomy->rewrite['slug'] ?? '') : '';
+            if ($slug === $rewrite) {
+                /* translators: 1: requested login slug, 2: taxonomy name. */
+                return sprintf(__('"%1$s" is already used by the taxonomy "%2$s".', 'wpsetting-class-package'), $slug, $taxonomy->name);
+            }
+        }
+
+        return null;
+    }
+
     /** 🔹 設定保存 */
     public function save_settings()
     {
-        // オプションを更新
-        update_option($this->login_slug_option, sanitize_title($_POST[$this->login_slug_option] ?? ''));
+        $requested_slug = sanitize_title(wp_unslash($_POST[$this->login_slug_option] ?? ''));
+        $current_slug   = get_option($this->login_slug_option, '');
+
+        if ('' === $requested_slug) {
+            // 空にするのはいつでも許可（ロックアウトからの復帰手段）
+            update_option($this->login_slug_option, '');
+            delete_option('itmar_login_slug_error');
+        } elseif ($requested_slug !== $current_slug) {
+            $conflict = $this->find_login_slug_conflict($requested_slug);
+            if (null === $conflict) {
+                update_option($this->login_slug_option, $requested_slug);
+                delete_option('itmar_login_slug_error');
+            } else {
+                // 衝突しているので採用しない。元の設定を維持する。
+                update_option('itmar_login_slug_error', $conflict);
+            }
+        }
+
         update_option($this->disable_author_archive_option, isset($_POST[$this->disable_author_archive_option]) ? 1 : 0);
         update_option($this->disable_xmlrpc_option, isset($_POST[$this->disable_xmlrpc_option]) ? 1 : 0);
 
         // フラッシュしてルールを反映
         flush_rewrite_rules();
+    }
+
+    /** スラッグ衝突を管理画面に通知する */
+    public function admin_notice_login_slug_error()
+    {
+        $message = get_option('itmar_login_slug_error');
+        if (!$message) {
+            return;
+        }
+?>
+        <div class="notice notice-error is-dismissible">
+            <p><?php echo esc_html($message); ?></p>
+            <p><?php esc_html_e('The login URL was not changed. Choose a different slug.', 'wpsetting-class-package'); ?></p>
+        </div>
+<?php
+        delete_option('itmar_login_slug_error');
     }
 
     /** 🔹 設定画面HTML */
@@ -224,6 +352,15 @@ class ItmarSecuritySettings
                 <td>
                     <input type="text" name="<?php echo esc_attr($this->login_slug_option); ?>" value="<?php echo esc_attr($login_slug); ?>" class="regular-text" />
                     <p class="description"><?php esc_html_e('Change the default login URL (wp-login.php).', 'wpsetting-class-package'); ?></p>
+                    <?php if ('' !== $login_slug) : ?>
+                        <p class="description">
+                            <strong><?php esc_html_e('Current login URL:', 'wpsetting-class-package'); ?></strong>
+                            <code><?php echo esc_html(home_url('/' . $login_slug . '/')); ?></code>
+                        </p>
+                        <p class="description">
+                            <?php esc_html_e('Bookmark this URL. While it is set, wp-login.php returns 404 for both GET and POST. Clearing this field restores the default login URL.', 'wpsetting-class-package'); ?>
+                        </p>
+                    <?php endif; ?>
                 </td>
             </tr>
             <tr valign="top">

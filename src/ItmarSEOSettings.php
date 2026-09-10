@@ -38,33 +38,81 @@ class ItmarSEOSettings
         // カスタムヘッダーコード出力
         add_action('wp_head', [$this, 'output_custom_header_code'], 99);
 
+        // GTM の noscript は <body> 直後に出す
+        add_action('wp_body_open', [$this, 'output_gtm_noscript']);
+
         // スクリプトのエンキュー
         add_action('admin_enqueue_scripts', [$this, 'enqueue_settings_scripts']);
     }
 
-    /** OGPタグ出力 */
+    /**
+     * OGPタグ出力
+     *
+     * 個別ページではその投稿の情報を出す。全ページでサイト共通の値を出していると、
+     * どのページを共有しても同じURL・同じタイトルとして扱われ、SNS 上で個別の
+     * ページが区別されない。
+     */
     public function output_ogp_tags()
     {
         if (!get_option($this->enable_option, 0)) return;
 
         $site_name = get_option($this->site_name_option, get_bloginfo('name'));
+        if ('' === $site_name) {
+            $site_name = get_bloginfo('name');
+        }
         $default_image = get_option($this->image_option, '');
         $square_image = get_option($this->image_square, '');
         $twitter_card = get_option($this->twitter_card_option, 'summary');
-        $twitter_image = $twitter_card === 'summary' ? $square_image : $default_image;
+
+        // 既定はサイト全体の値
+        $og_type  = 'website';
+        $og_title = $site_name;
+        $og_desc  = get_bloginfo('description');
+        $og_url   = home_url('/');
+        $og_image = $default_image;
+        $sq_image = $square_image;
+
+        if (is_singular()) {
+            $post = get_queried_object();
+            if ($post instanceof \WP_Post) {
+                $og_type  = is_page() ? 'website' : 'article';
+                $og_title = get_the_title($post);
+                $og_url   = get_permalink($post);
+
+                $excerpt = has_excerpt($post)
+                    ? get_the_excerpt($post)
+                    : wp_trim_words(wp_strip_all_tags(strip_shortcodes($post->post_content)), 60, '…');
+                if ('' !== trim((string) $excerpt)) {
+                    $og_desc = $excerpt;
+                }
+
+                $thumbnail = get_the_post_thumbnail_url($post, 'full');
+                if ($thumbnail) {
+                    $og_image = $thumbnail;
+                    $sq_image = $thumbnail;
+                }
+            }
+        }
+
+        $twitter_image = $twitter_card === 'summary' ? $sq_image : $og_image;
+        $og_locale     = $this->get_og_locale();
 
 ?>
         <!-- ItmarSEOSettings OGP Tags -->
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="<?php echo esc_attr($site_name); ?>" />
-        <meta property="og:description" content="<?php echo esc_attr(get_bloginfo('description')); ?>" />
-        <meta property="og:image" content="<?php echo esc_url($default_image); ?>" />
-        <meta property="og:url" content="<?php echo esc_url(home_url()); ?>" />
+        <meta property="og:type" content="<?php echo esc_attr($og_type); ?>" />
+        <meta property="og:title" content="<?php echo esc_attr($og_title); ?>" />
+        <meta property="og:description" content="<?php echo esc_attr($og_desc); ?>" />
+        <?php if ('' !== $og_image) : ?>
+            <meta property="og:image" content="<?php echo esc_url($og_image); ?>" />
+        <?php endif; ?>
+        <meta property="og:url" content="<?php echo esc_url($og_url); ?>" />
         <meta property="og:site_name" content="<?php echo esc_attr(get_bloginfo('name')); ?>" />
-        <meta property="og:locale" content="ja_JP" />
+        <meta property="og:locale" content="<?php echo esc_attr($og_locale); ?>" />
         <!-- Twitter 専用 -->
         <meta name="twitter:card" content="<?php echo esc_attr($twitter_card); ?>" />
-        <meta name="twitter:image" content="<?php echo esc_url($twitter_image); ?>" />
+        <?php if ('' !== $twitter_image) : ?>
+            <meta name="twitter:image" content="<?php echo esc_url($twitter_image); ?>" />
+        <?php endif; ?>
     <?php
     }
 
@@ -79,7 +127,7 @@ class ItmarSEOSettings
             echo '<meta name="google-site-verification" content="' . esc_attr($verification) . '">' . "\n";
         }
         //GA4設定タグ
-        $ga_id = get_option($this->ga_measurement_id);
+        $ga_id = $this->get_valid_id($this->ga_measurement_id, '/^G-[A-Z0-9\-]+$/i');
         if (!empty($ga_id)) {
             echo <<<EOD
             <!-- Google Analytics -->
@@ -94,7 +142,7 @@ class ItmarSEOSettings
             EOD;
         }
         //GTM設定タグ
-        $gtm_id = get_option($this->gtm_container_id);
+        $gtm_id = $this->get_valid_id($this->gtm_container_id, '/^GTM-[A-Z0-9]+$/i');
         if (!empty($gtm_id)) {
             echo <<<EOD
             <!-- Google Tag Manager -->
@@ -109,26 +157,80 @@ class ItmarSEOSettings
             EOD;
             echo "\n";
         }
-        $output_body = get_option($this->gtm_output_body);
-        if (!empty($gtm_id) && $output_body) {
-            echo <<<EOD
-            <!-- Google Tag Manager (noscript) -->
-            <noscript>
-            <iframe src="https://www.googletagmanager.com/ns.html?id={$gtm_id}"
-            height="0" width="0" style="display:none;visibility:hidden"></iframe>
-            </noscript>
-            <!-- End Google Tag Manager (noscript) -->
-            EOD;
-            echo "\n";
-        }
         //noindex設定
+        // is_archive() をそのまま使うと投稿タイプアーカイブまで巻き込むため、
+        // 設定画面のラベルどおりターム系と日付・著者に限定する。
+        $is_listing_archive = is_category() || is_tag() || is_tax() || is_date() || is_author();
         if (
             (is_search() && get_option($this->noindex_search)) ||
-            ((is_category() || is_tag() || is_date() || is_author() || is_archive()) && get_option($this->noindex_archive)) ||
+            ($is_listing_archive && get_option($this->noindex_archive)) ||
             (is_404() && get_option($this->noindex_404))
         ) {
             echo '<meta name="robots" content="noindex, nofollow">' . "\n";
         }
+    }
+
+    /**
+     * OGP 用のロケール文字列を返す。
+     *
+     * OGP は language_TERRITORY 形式を期待するが、WordPress の get_locale() は
+     * 日本語なら "ja" のように地域を持たないことがある。主要な言語だけ補う。
+     */
+    private function get_og_locale()
+    {
+        $locale = get_locale();
+        if (str_contains($locale, '_')) {
+            return $locale;
+        }
+
+        $fallback = array(
+            'ja' => 'ja_JP',
+            'ko' => 'ko_KR',
+            'zh' => 'zh_CN',
+            'en' => 'en_US',
+            'de' => 'de_DE',
+            'fr' => 'fr_FR',
+            'es' => 'es_ES',
+            'it' => 'it_IT',
+            'th' => 'th_TH',
+        );
+
+        return $fallback[$locale] ?? $locale;
+    }
+
+    /**
+     * 計測IDを検証して返す。想定の形式でなければ空文字。
+     *
+     * インラインスクリプトへ素の値を差し込むため、形式を固定しておく。
+     */
+    private function get_valid_id($option_name, $pattern)
+    {
+        $value = trim((string) get_option($option_name, ''));
+        return ('' !== $value && preg_match($pattern, $value)) ? $value : '';
+    }
+
+    /**
+     * GTM の noscript を <body> 直後に出力する。
+     *
+     * iframe は <head> 内に置けないため、wp_head ではなく wp_body_open に出す。
+     * ブロックテーマは wp_body_open を必ず呼ぶ。
+     */
+    public function output_gtm_noscript()
+    {
+        $gtm_id = $this->get_valid_id($this->gtm_container_id, '/^GTM-[A-Z0-9]+$/i');
+        if (empty($gtm_id) || !get_option($this->gtm_output_body)) {
+            return;
+        }
+
+        echo <<<EOD
+        <!-- Google Tag Manager (noscript) -->
+        <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id={$gtm_id}"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        EOD;
+        echo "\n";
     }
 
     /** 設定画面用スクリプト */
@@ -289,8 +391,8 @@ class ItmarSEOSettings
                         <li>
                             <?php echo esc_html__("Click 'Add Property' and choose one of the following types:", "wpsetting-class-package"); ?>
                             <ul style="margin-left:20px;">
-                                <li><strong><?php echo esc_html__("Domain"); ?></strong> – <?php echo esc_html__("Verifies all subdomains and protocols via DNS (recommended). No further steps needed here.", "wpsetting-class-package"); ?></li>
-                                <li><strong><?php echo esc_html__("URL Prefix"); ?></strong> – <?php echo esc_html__("Verifies a specific URL (e.g., https://example.com) via HTML tag.", "wpsetting-class-package"); ?></li>
+                                <li><strong><?php echo esc_html__("Domain", "wpsetting-class-package"); ?></strong> – <?php echo esc_html__("Verifies all subdomains and protocols via DNS (recommended). No further steps needed here.", "wpsetting-class-package"); ?></li>
+                                <li><strong><?php echo esc_html__("URL Prefix", "wpsetting-class-package"); ?></strong> – <?php echo esc_html__("Verifies a specific URL (e.g., https://example.com) via HTML tag.", "wpsetting-class-package"); ?></li>
                             </ul>
                         </li>
                         <li>
@@ -327,7 +429,7 @@ class ItmarSEOSettings
                     <p><?php echo esc_html__("If you haven't set up Google Analytics yet, follow the steps below:", "wpsetting-class-package"); ?></p>
                     <ol style="margin-left:20px;">
                         <li>
-                            <?php echo esc_html__("Go to"); ?>
+                            <?php echo esc_html__("Go to", "wpsetting-class-package"); ?>
                             <a href="https://analytics.google.com/analytics/web/" target="_blank">
                                 <?php echo esc_html__("Google Analytics", "wpsetting-class-package"); ?>
                             </a>
@@ -345,7 +447,7 @@ class ItmarSEOSettings
                             </a>)
                         </li>
                         <li>
-                            <?php echo esc_html__("In the 'Data Streams' step, choose", "wpsetting-class-package"); ?> <strong><?php echo esc_html__("Web"); ?></strong>
+                            <?php echo esc_html__("In the 'Data Streams' step, choose", "wpsetting-class-package"); ?> <strong><?php echo esc_html__("Web", "wpsetting-class-package"); ?></strong>
                             <?php echo esc_html__("and enter your site's URL and stream name.", "wpsetting-class-package"); ?>
                         </li>
                         <li>
@@ -400,6 +502,11 @@ class ItmarSEOSettings
                         value="<?php echo esc_attr(get_option($this->gtm_container_id, '')); ?>"
                         placeholder="GTM-XXXXXXX" />
                     <p class="description"><?php echo esc_html__("Example: GTM-ABC123X", "wpsetting-class-package"); ?></p>
+                    <?php if ('' !== trim((string) get_option($this->ga_measurement_id, '')) && '' !== trim((string) get_option($this->gtm_container_id, ''))) : ?>
+                        <p class="description" style="color:#b32d2e;">
+                            <?php echo esc_html__("Both a GA4 Measurement ID and a GTM Container ID are set. If GTM also fires a GA4 tag, page views will be counted twice. Use only one of them.", "wpsetting-class-package"); ?>
+                        </p>
+                    <?php endif; ?>
 
                     <label>
                         <input type="checkbox"
@@ -436,7 +543,6 @@ class ItmarSEOSettings
                     </p>
                 </td>
             </tr>
-
         </table>
 <?php
     }

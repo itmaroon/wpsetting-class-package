@@ -7,471 +7,600 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-10T14:04:15+02:00\n"
+"POT-Creation-Date: 2026-09-10T09:20:14+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wpsetting-class-package\n"
 
-#: src/ItmarDbAction.php:44
-#: src/ItmarDbAction.php:48
+#: src/ItmarDbAction.php:51
+#: src/ItmarDbAction.php:55
 msgid "Skip (unregistered post type)"
 msgstr ""
 
-#: src/ItmarDbAction.php:56
+#: src/ItmarDbAction.php:63
 msgid "Skip (Existing revison data available)"
 msgstr ""
 
-#: src/ItmarDbAction.php:111
+#: src/ItmarDbAction.php:118
 msgid "Error (update failed)"
 msgstr ""
 
-#: src/ItmarDbAction.php:114
+#: src/ItmarDbAction.php:121
 msgid "Overwrite successful"
 msgstr ""
 
-#: src/ItmarDbAction.php:116
-#: src/ItmarDbAction.php:127
-#: src/ItmarDbAction.php:129
+#: src/ItmarDbAction.php:123
+#: src/ItmarDbAction.php:134
+#: src/ItmarDbAction.php:136
 msgid "Addition successful"
 msgstr ""
 
-#: src/ItmarDbAction.php:124
+#: src/ItmarDbAction.php:131
 msgid "Error (addition failed)"
 msgstr ""
 
-#: src/ItmarDbAction.php:154
-#: src/ItmarDbAction.php:156
+#: src/ItmarDbAction.php:170
+#: src/ItmarDbAction.php:172
 msgid "Taxonomy: "
 msgstr ""
 
-#: src/ItmarDbAction.php:156
+#: src/ItmarDbAction.php:172
 msgid "has been registered."
 msgstr ""
 
-#: src/ItmarDbAction.php:164
+#: src/ItmarDbAction.php:180
 msgid "Custom Field Import:"
 msgstr ""
 
-#: src/ItmarDbAction.php:205
+#: src/ItmarDbAction.php:233
 msgid "Custom Field Import(ACF):"
 msgstr ""
 
-#: src/ItmarDbAction.php:211
+#: src/ItmarDbAction.php:239
 msgid "Custom Field Import(ACF GROUP):"
 msgstr ""
 
-#: src/ItmarDbAction.php:214
+#: src/ItmarDbAction.php:242
 msgid ": ACF or SCF is not installed"
 msgstr ""
 
-#: src/ItmarDbAction.php:220
+#: src/ItmarDbAction.php:248
 msgid "comment item has been registered."
 msgstr ""
 
-#: src/ItmarDbAction.php:293
+#: src/ItmarDbAction.php:331
+msgid "Failed to preserve thumbnail after importing revisions (media ID:"
+msgstr ""
+
+#: src/ItmarDbAction.php:333
+msgid "Thumbnail restored after importing revisions (media ID:"
+msgstr ""
+
+#: src/ItmarDbAction.php:372
+msgid "No media files were provided"
+msgstr ""
+
+#: src/ItmarDbAction.php:406
 msgid "File not found (file name:"
 msgstr ""
 
-#: src/ItmarDbAction.php:306
+#: src/ItmarDbAction.php:426
 msgid "Processing stopped due to existing file found (media ID:"
 msgstr ""
 
-#: src/ItmarDbAction.php:334
+#: src/ItmarDbAction.php:454
+msgid "Failed to register attachment"
+msgstr ""
+
+#: src/ItmarDbAction.php:463
 msgid "File uploaded"
 msgstr ""
 
-#: src/ItmarDbAction.php:337
+#: src/ItmarDbAction.php:467
 msgid "Failed to upload file"
 msgstr ""
 
-#: src/ItmarDbAction.php:346
+#: src/ItmarDbAction.php:482
+msgid "Failed to set thumbnail (media ID:"
+msgstr ""
+
+#: src/ItmarDbAction.php:484
 msgid "Upload thumbnail: "
 msgstr ""
 
-#: src/ItmarDbAction.php:348
+#: src/ItmarDbAction.php:487
 msgid "Uploading in-content media: "
 msgstr ""
 
-#: src/ItmarDbAction.php:352
+#: src/ItmarDbAction.php:496
 msgid "Uploading acf media: "
 msgstr ""
 
-#: src/ItmarDbAction.php:381
+#: src/ItmarDbAction.php:538
 msgid "Unregistered Post Types"
 msgstr ""
 
-#: src/ItmarModifyPost.php:214
+#: src/ItmarModifyPost.php:256
 msgid "Title"
 msgstr ""
 
-#: src/ItmarModifyPost.php:215
+#: src/ItmarModifyPost.php:257
 msgid "Editor"
 msgstr ""
 
-#: src/ItmarModifyPost.php:216
+#: src/ItmarModifyPost.php:258
 msgid "Author"
 msgstr ""
 
-#: src/ItmarModifyPost.php:217
+#: src/ItmarModifyPost.php:259
 msgid "Excerpt"
 msgstr ""
 
-#: src/ItmarModifyPost.php:218
+#: src/ItmarModifyPost.php:260
 msgid "Trackbacks(Deprecated)"
 msgstr ""
 
-#: src/ItmarModifyPost.php:219
+#: src/ItmarModifyPost.php:261
 msgid "Custom Fields"
 msgstr ""
 
-#: src/ItmarModifyPost.php:220
+#: src/ItmarModifyPost.php:262
 msgid "Comments"
 msgstr ""
 
-#: src/ItmarModifyPost.php:221
+#: src/ItmarModifyPost.php:263
 msgid "Revisions"
 msgstr ""
 
-#: src/ItmarModifyPost.php:222
+#: src/ItmarModifyPost.php:264
 msgid "Post Formats(Deprecated)"
 msgstr ""
 
-#: src/ItmarModifyPost.php:223
+#: src/ItmarModifyPost.php:265
 msgid "Featured Image"
 msgstr ""
 
-#: src/ItmarModifyPost.php:240
+#: src/ItmarModifyPost.php:282
 msgid "Modify Post Menu Settings"
 msgstr ""
 
-#: src/ItmarModifyPost.php:243
+#: src/ItmarModifyPost.php:285
 msgid "Post Label Name"
 msgstr ""
 
-#: src/ItmarModifyPost.php:247
+#: src/ItmarModifyPost.php:289
 msgid "Enable Archive Page"
 msgstr ""
 
-#: src/ItmarModifyPost.php:249
+#: src/ItmarModifyPost.php:291
 msgid "Enable archive"
 msgstr ""
 
-#: src/ItmarModifyPost.php:253
+#: src/ItmarModifyPost.php:295
 msgid "Archive Slug"
 msgstr ""
 
-#: src/ItmarModifyPost.php:257
+#: src/ItmarModifyPost.php:299
 msgid "Post Supports"
 msgstr ""
 
-#: src/ItmarRedirectControl.php:125
+#: src/ItmarRedirectControl.php:84
+msgid "This site is not installed in a subdirectory, so this setting is not needed."
+msgstr ""
+
+#: src/ItmarRedirectControl.php:88
+msgid "The domain root could not be determined from the server environment (DOCUMENT_ROOT is empty)."
+msgstr ""
+
+#. translators: %s: filesystem path of the domain root.
+#: src/ItmarRedirectControl.php:95
+#, php-format
+msgid "The domain root (%s) was not found."
+msgstr ""
+
+#. translators: %s: filesystem path of the domain root.
+#: src/ItmarRedirectControl.php:98
+#, php-format
+msgid "The domain root (%s) is not writable."
+msgstr ""
+
+#. translators: %s: filesystem path of an existing index.php.
+#: src/ItmarRedirectControl.php:103
+#, php-format
+msgid "%s already exists and was not created by this plugin, so it will not be replaced."
+msgstr ""
+
+#: src/ItmarRedirectControl.php:184
+msgid "Failed to create index.php in the domain root. Nothing was changed."
+msgstr ""
+
+#: src/ItmarRedirectControl.php:192
+msgid "The domain root did not respond as this site, so the change was not applied. The Site Address is unchanged."
+msgstr ""
+
+#: src/ItmarRedirectControl.php:203
+msgid "The domain root stopped responding after the change, so it was reverted automatically."
+msgstr ""
+
+#: src/ItmarRedirectControl.php:281
 msgid "Redirect Settings"
 msgstr ""
 
-#: src/ItmarRedirectControl.php:128
+#: src/ItmarRedirectControl.php:285
 msgid "Redirecting from the domain root URL"
 msgstr ""
 
-#: src/ItmarRedirectControl.php:132
+#: src/ItmarRedirectControl.php:289
 msgid "Redirect the domain root URL to this site"
 msgstr ""
 
-#: src/ItmarRedirectControl.php:134
-msgid "If this site is installed on a subdomain, it will be accessible at the root domain URL."
+#: src/ItmarRedirectControl.php:291
+msgid "If this site is installed in a subdirectory, it will also be accessible at the root domain URL."
 msgstr ""
 
-#: src/ItmarRedirectControl.php:147
-msgid "Failed to create index.php. The file already exists or insufficient permissions. Please remove index.php manually if you want to enable redirect."
+#: src/ItmarRedirectControl.php:307
+msgid "Redirect setting was not applied."
 msgstr ""
 
-#: src/ItmarRevisionClass.php:86
-msgid "Revision Settings"
-msgstr ""
-
-#: src/ItmarRevisionClass.php:110
-msgid "Maximum number of revisions for this post"
-msgstr ""
-
-#: src/ItmarRevisionClass.php:112
-msgid "If left blank, there is no limit."
-msgstr ""
-
-#: src/ItmarRevisionClass.php:155
-msgid "Revision Control Settings"
-msgstr ""
-
-#: src/ItmarRevisionClass.php:158
-msgid "Enable per-post revision limit control"
-msgstr ""
-
-#: src/ItmarRevisionClass.php:162
-msgid "Enable individual post revision limit setting."
-msgstr ""
-
-#: src/ItmarRevisionClass.php:167
-msgid "Default Revision Setting"
-msgstr ""
-
-#: src/ItmarRevisionClass.php:175
-msgid "Not set (Unlimited)"
-msgstr ""
-
-#: src/ItmarRevisionClass.php:177
+#: src/ItmarRevisionClass.php:116
+#: src/ItmarRevisionClass.php:126
 msgid "Do not save"
 msgstr ""
 
-#: src/ItmarRevisionClass.php:180
+#. translators: %d: number of revisions to keep.
+#: src/ItmarRevisionClass.php:118
+#: src/ItmarRevisionClass.php:129
+#, php-format
 msgid "Save up to %d revisions"
 msgstr ""
 
-#: src/ItmarSecuritySettings.php:92
-#: src/ItmarSecuritySettings.php:137
+#: src/ItmarRevisionClass.php:123
+msgid "Not set (Unlimited)"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:147
+msgid "Revision Settings"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:170
+msgid "Maximum number of revisions for this post"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:172
+msgid "Leave blank to follow the default below. Enter 0 to stop saving revisions for this post."
+msgstr ""
+
+#: src/ItmarRevisionClass.php:173
+msgid "Current default:"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:229
+msgid "Revision Control Settings"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:232
+msgid "Enable per-post revision limit control"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:236
+msgid "Enable individual post revision limit setting."
+msgstr ""
+
+#: src/ItmarRevisionClass.php:239
+msgid "The number for each post is set in the \"Revision Settings\" box in the sidebar of the post edit screen."
+msgstr ""
+
+#: src/ItmarRevisionClass.php:244
+msgid "Site-wide Default Revisions"
+msgstr ""
+
+#: src/ItmarRevisionClass.php:248
+msgid "Applied to posts that have no individual setting. Leave blank to follow the WordPress default. Enter 0 to stop saving revisions."
+msgstr ""
+
+#: src/ItmarSecuritySettings.php:119
 msgid "404 Not Found"
 msgstr ""
 
-#: src/ItmarSecuritySettings.php:191
+#. translators: %s: requested login slug.
+#: src/ItmarSecuritySettings.php:268
+#, php-format
+msgid "\"%s\" is reserved by WordPress."
+msgstr ""
+
+#. translators: 1: requested login slug, 2: title of the conflicting content.
+#: src/ItmarSecuritySettings.php:274
+#, php-format
+msgid "\"%1$s\" is already used by the content \"%2$s\"."
+msgstr ""
+
+#. translators: 1: requested login slug, 2: post type name.
+#: src/ItmarSecuritySettings.php:282
+#, php-format
+msgid "\"%1$s\" is already used by the post type \"%2$s\"."
+msgstr ""
+
+#. translators: 1: requested login slug, 2: taxonomy name.
+#: src/ItmarSecuritySettings.php:290
+#, php-format
+msgid "\"%1$s\" is already used by the taxonomy \"%2$s\"."
+msgstr ""
+
+#: src/ItmarSecuritySettings.php:335
+msgid "The login URL was not changed. Choose a different slug."
+msgstr ""
+
+#: src/ItmarSecuritySettings.php:348
 msgid "Security Settings"
 msgstr ""
 
-#: src/ItmarSecuritySettings.php:194
+#: src/ItmarSecuritySettings.php:351
 msgid "Custom Login URL"
 msgstr ""
 
-#: src/ItmarSecuritySettings.php:197
+#: src/ItmarSecuritySettings.php:354
 msgid "Change the default login URL (wp-login.php)."
 msgstr ""
 
-#: src/ItmarSecuritySettings.php:201
+#: src/ItmarSecuritySettings.php:357
+msgid "Current login URL:"
+msgstr ""
+
+#: src/ItmarSecuritySettings.php:361
+msgid "Bookmark this URL. While it is set, wp-login.php returns 404 for both GET and POST. Clearing this field restores the default login URL."
+msgstr ""
+
+#: src/ItmarSecuritySettings.php:367
 msgid "Disable Author Archives & REST API User Endpoint"
 msgstr ""
 
-#: src/ItmarSecuritySettings.php:205
+#: src/ItmarSecuritySettings.php:371
 msgid "Block access to /?author= and REST API /wp/v2/users."
 msgstr ""
 
-#: src/ItmarSecuritySettings.php:210
+#: src/ItmarSecuritySettings.php:376
 msgid "Disable XML-RPC"
 msgstr ""
 
-#: src/ItmarSecuritySettings.php:214
+#: src/ItmarSecuritySettings.php:380
 msgid "Disable XML-RPC endpoint (used for pingbacks, remote publishing, etc)."
 msgstr ""
 
-#: src/ItmarSEOSettings.php:218
+#: src/ItmarSEOSettings.php:320
 msgid "OGP Settings"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:221
+#: src/ItmarSEOSettings.php:323
 msgid "Enable OGP Tags"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:225
+#: src/ItmarSEOSettings.php:327
 msgid "Output OGP meta tags in &lt;head&gt; section"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:230
+#: src/ItmarSEOSettings.php:332
 msgid "Site Name for OGP"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:233
+#: src/ItmarSEOSettings.php:335
 msgid "If empty, the default site title will be used."
 msgstr ""
 
-#: src/ItmarSEOSettings.php:237
+#: src/ItmarSEOSettings.php:339
 msgid "Default OGP Image URL"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:240
-#: src/ItmarSEOSettings.php:253
+#: src/ItmarSEOSettings.php:342
+#: src/ItmarSEOSettings.php:355
 msgid "Select Image"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:246
-#: src/ItmarSEOSettings.php:259
+#: src/ItmarSEOSettings.php:348
+#: src/ItmarSEOSettings.php:361
 msgid "Select an image from media library or input URL."
 msgstr ""
 
-#: src/ItmarSEOSettings.php:250
+#: src/ItmarSEOSettings.php:352
 msgid "Square OGP Image URL"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:263
+#: src/ItmarSEOSettings.php:365
 msgid "Twitter Card Type"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:269
+#: src/ItmarSEOSettings.php:371
 msgid "Select Twitter card type."
 msgstr ""
 
-#: src/ItmarSEOSettings.php:275
+#: src/ItmarSEOSettings.php:377
 msgid "Google SEO Settings"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:278
+#: src/ItmarSEOSettings.php:380
 msgid "Google Search Console Setup"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:281
+#: src/ItmarSEOSettings.php:383
 msgid "Follow the steps below to connect your site with Google Search Console."
 msgstr ""
 
-#: src/ItmarSEOSettings.php:286
+#: src/ItmarSEOSettings.php:388
 msgid "Open Google Search Console"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:290
+#: src/ItmarSEOSettings.php:392
 msgid "Click 'Add Property' and choose one of the following types:"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:292
-msgid "Verifies all subdomains and protocols via DNS (recommended). No further steps needed here."
-msgstr ""
-
-#: src/ItmarSEOSettings.php:293
-msgid "Verifies a specific URL (e.g., https://example.com) via HTML tag."
-msgstr ""
-
-#: src/ItmarSEOSettings.php:297
-msgid "Select the verification method you used:"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:301
-msgid "Domain (via DNS)"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:306
-msgid "URL Prefix (via HTML tag)"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:313
-msgid "Paste the content value from the HTML tag:"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:317
-msgid "Use the following link to open the settings page:"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:319
-msgid "From there, go to 'Ownership verification' → 'HTML tag', and copy the content value from the tag."
-msgstr ""
-
-#: src/ItmarSEOSettings.php:325
-msgid "Google Analytics (GA4) Setup"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:327
-msgid "If you haven't set up Google Analytics yet, follow the steps below:"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:332
-msgid "Google Analytics"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:334
-#: src/ItmarSEOSettings.php:382
-msgid "and sign in with your Google account."
-msgstr ""
-
-#: src/ItmarSEOSettings.php:335
-msgid "If this is your first time, you'll see a button labeled"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:336
-msgid "Start Measuring"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:337
-msgid "– click it to begin setup."
-msgstr ""
-
-#: src/ItmarSEOSettings.php:340
-msgid "Create a new Analytics account. This is typically your organization or site name."
-msgstr ""
-
-#: src/ItmarSEOSettings.php:342
-msgid "Next, create a property (e.g., MyWebsite) and choose your time zone and currency."
-msgstr ""
-
-#: src/ItmarSEOSettings.php:344
-msgid "See official setup guide"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:348
-msgid "In the 'Data Streams' step, choose"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:349
-msgid "and enter your site's URL and stream name."
-msgstr ""
-
-#: src/ItmarSEOSettings.php:352
-msgid "After setup, your 'Measurement ID' will be shown in this format:"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:353
-msgid "– copy and paste it below."
-msgstr ""
-
-#: src/ItmarSEOSettings.php:358
-msgid "Measurement ID"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:367
-msgid "Starts with 'G-', e.g. G-ABC123XYZ"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:372
-msgid "Google Tag Manager (GTM)"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:375
-msgid "To use Google Tag Manager for managing various tracking codes (Google Analytics, Ads, etc.), follow the steps below:"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:380
-msgid "Open Google Tag Manager"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:385
-msgid "Click 'Create Account', enter your company or site name, select your country, and choose 'Web' as the target platform."
-msgstr ""
-
-#: src/ItmarSEOSettings.php:388
-msgid "After setup, you’ll get a GTM Container ID that looks like"
-msgstr ""
-
-#: src/ItmarSEOSettings.php:389
-msgid "Paste it below."
+#: src/ItmarSEOSettings.php:394
+msgid "Domain"
 msgstr ""
 
 #: src/ItmarSEOSettings.php:394
-msgid "GTM Container ID"
+msgid "Verifies all subdomains and protocols via DNS (recommended). No further steps needed here."
 msgstr ""
 
-#: src/ItmarSEOSettings.php:402
-msgid "Example: GTM-ABC123X"
+#: src/ItmarSEOSettings.php:395
+msgid "URL Prefix"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:409
-msgid "Also output the noscript GTM code after the opening &lt;body&gt; tag (recommended)"
+#: src/ItmarSEOSettings.php:395
+msgid "Verifies a specific URL (e.g., https://example.com) via HTML tag."
 msgstr ""
 
-#: src/ItmarSEOSettings.php:414
-msgid "Noindex Settings by Page Type"
+#: src/ItmarSEOSettings.php:399
+msgid "Select the verification method you used:"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:403
+msgid "Domain (via DNS)"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:408
+msgid "URL Prefix (via HTML tag)"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:415
+msgid "Paste the content value from the HTML tag:"
 msgstr ""
 
 #: src/ItmarSEOSettings.php:419
+msgid "Use the following link to open the settings page:"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:421
+msgid "From there, go to 'Ownership verification' → 'HTML tag', and copy the content value from the tag."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:427
+msgid "Google Analytics (GA4) Setup"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:429
+msgid "If you haven't set up Google Analytics yet, follow the steps below:"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:432
+msgid "Go to"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:434
+msgid "Google Analytics"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:436
+#: src/ItmarSEOSettings.php:484
+msgid "and sign in with your Google account."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:437
+msgid "If this is your first time, you'll see a button labeled"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:438
+msgid "Start Measuring"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:439
+msgid "– click it to begin setup."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:442
+msgid "Create a new Analytics account. This is typically your organization or site name."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:444
+msgid "Next, create a property (e.g., MyWebsite) and choose your time zone and currency."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:446
+msgid "See official setup guide"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:450
+msgid "In the 'Data Streams' step, choose"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:450
+msgid "Web"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:451
+msgid "and enter your site's URL and stream name."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:454
+msgid "After setup, your 'Measurement ID' will be shown in this format:"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:455
+msgid "– copy and paste it below."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:460
+msgid "Measurement ID"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:469
+msgid "Starts with 'G-', e.g. G-ABC123XYZ"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:474
+msgid "Google Tag Manager (GTM)"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:477
+msgid "To use Google Tag Manager for managing various tracking codes (Google Analytics, Ads, etc.), follow the steps below:"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:482
+msgid "Open Google Tag Manager"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:487
+msgid "Click 'Create Account', enter your company or site name, select your country, and choose 'Web' as the target platform."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:490
+msgid "After setup, you’ll get a GTM Container ID that looks like"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:491
+msgid "Paste it below."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:496
+msgid "GTM Container ID"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:504
+msgid "Example: GTM-ABC123X"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:507
+msgid "Both a GA4 Measurement ID and a GTM Container ID are set. If GTM also fires a GA4 tag, page views will be counted twice. Use only one of them."
+msgstr ""
+
+#: src/ItmarSEOSettings.php:516
+msgid "Also output the noscript GTM code after the opening &lt;body&gt; tag (recommended)"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:521
+msgid "Noindex Settings by Page Type"
+msgstr ""
+
+#: src/ItmarSEOSettings.php:526
 msgid "Noindex on search result pages (?s=...)"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:425
+#: src/ItmarSEOSettings.php:532
 msgid "Noindex on archive pages (category, tag, date)"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:431
+#: src/ItmarSEOSettings.php:538
 msgid "Noindex on 404 not found pages"
 msgstr ""
 
-#: src/ItmarSEOSettings.php:435
+#: src/ItmarSEOSettings.php:542
 msgid "Prevents selected types of pages from being indexed by search engines."
 msgstr ""

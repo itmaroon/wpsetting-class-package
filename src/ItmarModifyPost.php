@@ -13,6 +13,20 @@ class ItmarModifyPost
     private $archive_slug_option = 'itmar_post_archive_slug';
     private $supports_option = 'itmar_post_supports';
 
+    /** 設定画面で扱う supports の一覧。 */
+    private const SUPPORT_KEYS = [
+        'title',
+        'editor',
+        'author',
+        'excerpt',
+        'trackbacks',
+        'custom-fields',
+        'comments',
+        'revisions',
+        'post-formats',
+        'thumbnail',
+    ];
+
     private function __construct()
     {
         // 管理画面側でラベルとメニュー変更
@@ -42,8 +56,45 @@ class ItmarModifyPost
         if (get_option('itmar_post_needs_flush')) {
             flush_rewrite_rules();
             update_option('itmar_post_needs_flush', 0);
-            error_log('[ItmarModifyPost] flush_rewrite_rules() executed');
         }
+    }
+
+    /**
+     * supports 設定を「サポート名 => 真偽」の連想配列に正規化する。
+     *
+     * 旧版はサポート名のリスト（['title', 'editor', ...]）を保存していた。その形の
+     * まま連想配列として読むとキーが 0,1,2... になり、実在しないサポートを登録した
+     * うえで本来の supports を全て失う。両形式を受け付けることで、壊れた値が保存済み
+     * のサイトもコード更新だけで復旧する。
+     *
+     * @return array|null 配列でなければ null（＝設定なし）。
+     */
+    private function normalize_supports($raw)
+    {
+        if (!is_array($raw)) return null;
+
+        $normalized = [];
+        foreach ($raw as $key => $value) {
+            if (is_int($key)) {
+                // リスト形式は値がサポート名
+                if (is_string($value) && in_array($value, self::SUPPORT_KEYS, true)) {
+                    $normalized[$value] = 1;
+                }
+                continue;
+            }
+            // 連想配列形式はキーがサポート名
+            if (in_array($key, self::SUPPORT_KEYS, true) && $value) {
+                $normalized[$key] = 1;
+            }
+        }
+
+        return $normalized;
+    }
+
+    /** 正規化済みの supports 設定を返す。 */
+    private function get_supports()
+    {
+        return $this->normalize_supports(get_option($this->supports_option));
     }
 
     /**
@@ -51,8 +102,8 @@ class ItmarModifyPost
      */
     public function register_theme_supports()
     {
-        $saved_supports = get_option($this->supports_option);
-        if (!is_array($saved_supports)) return;
+        $saved_supports = $this->get_supports();
+        if (null === $saved_supports) return;
 
         if (!empty($saved_supports['thumbnail'])) {
             add_theme_support('post-thumbnails');
@@ -68,24 +119,11 @@ class ItmarModifyPost
      */
     public function modify_post_supports()
     {
-        $support_options = [
-            'title',
-            'editor',
-            'author',
-            'excerpt',
-            'trackbacks',
-            'custom-fields',
-            'comments',
-            'revisions',
-            'post-formats',
-            'thumbnail'
-        ];
-
-        $saved_supports = get_option($this->supports_option);
-        if (!is_array($saved_supports)) return;
+        $saved_supports = $this->get_supports();
+        if (null === $saved_supports) return;
 
         // 一旦すべての supports を削除
-        foreach ($support_options as $support) {
+        foreach (self::SUPPORT_KEYS as $support) {
             remove_post_type_support('post', $support);
         }
 
@@ -163,16 +201,16 @@ class ItmarModifyPost
         $custom_label = get_option($this->post_label_option, '投稿');
 
         if (isset($submenu['edit.php'])) {
+            // 表示ラベルではなくメニューのスラッグで判定する。ラベル一致だと
+            // 管理画面の言語が日本語以外のときに何も置き換わらない。
             foreach ($submenu['edit.php'] as $key => $item) {
-                if (isset($item[0])) {
-                    // 投稿一覧
-                    if (strpos($item[0], '投稿一覧') !== false) {
-                        $submenu['edit.php'][$key][0] = $custom_label . '一覧';
-                    }
-                    // 新規追加
-                    if (strpos($item[0], '新規追加') !== false) {
-                        $submenu['edit.php'][$key][0] = '新規' . $custom_label;
-                    }
+                if (!isset($item[2])) {
+                    continue;
+                }
+                if ($item[2] === 'edit.php') {
+                    $submenu['edit.php'][$key][0] = $custom_label . '一覧';
+                } elseif ($item[2] === 'post-new.php') {
+                    $submenu['edit.php'][$key][0] = '新規' . $custom_label;
                 }
             }
         }
@@ -181,8 +219,8 @@ class ItmarModifyPost
     //トラックバックの停止
     public function maybe_block_trackback()
     {
-        $saved_supports = get_option($this->supports_option);
-        if (empty($saved_supports['trackbacks'])) {
+        $saved_supports = $this->get_supports();
+        if (null !== $saved_supports && empty($saved_supports['trackbacks'])) {
             if (strpos($_SERVER['REQUEST_URI'], 'wp-trackback.php') !== false) {
                 wp_die('Trackbacks are disabled.', 'Trackbacks Disabled', ['response' => 403]);
             }
@@ -196,7 +234,11 @@ class ItmarModifyPost
         update_option($this->post_label_option, sanitize_text_field($_POST['itmar_post_label'] ?? ''));
         update_option($this->has_archive_option, isset($_POST['itmar_post_has_archive']) ? 1 : 0);
         update_option($this->archive_slug_option, sanitize_title($_POST['itmar_post_archive_slug'] ?? ''));
-        update_option($this->supports_option, $_POST['itmar_post_supports'] ?? []);
+        // 既知のサポート名だけを「サポート名 => 1」の形で保存する
+        update_option(
+            $this->supports_option,
+            $this->normalize_supports(wp_unslash($_POST['itmar_post_supports'] ?? [])) ?? []
+        );
 
         // 実際の flush は次回リクエストで実行
         update_option('itmar_post_needs_flush', 1);
@@ -208,7 +250,7 @@ class ItmarModifyPost
         $post_label = get_option($this->post_label_option, 'Post');
         $has_archive = get_option($this->has_archive_option, 0);
         $archive_slug = get_option($this->archive_slug_option, 'archive');
-        $saved_supports = get_option($this->supports_option);
+        $saved_supports = $this->get_supports();
 
         $support_options = [
             'title'           => esc_html__('Title', 'wpsetting-class-package'),
@@ -226,7 +268,7 @@ class ItmarModifyPost
         // レンダリング用の supports 配列を準備
         $supports = [];
 
-        if ($saved_supports) {
+        if (null !== $saved_supports) {
             // 保存済みがあればそちらを優先
             $supports = $saved_supports;
         } else {
