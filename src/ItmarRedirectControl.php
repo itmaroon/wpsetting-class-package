@@ -161,7 +161,10 @@ class ItmarRedirectControl
         $current   = (int) get_option($this->redirect_option, 0);
 
         if ($requested === $current) {
-            return; // 変更なし。毎回 home を書き戻さない。
+            if ($requested) {
+                $this->repair_redirect_index();
+            }
+            return; // home と復元先は変更しない。
         }
 
         if ($requested) {
@@ -169,6 +172,26 @@ class ItmarRedirectControl
         } else {
             $this->disable_redirect();
         }
+    }
+
+    /** 有効のまま保存した場合も検証し、入口ファイルが欠落していれば再生成する。 */
+    private function repair_redirect_index()
+    {
+        $check = $this->check_requirements();
+        if (!$check['ok']) {
+            update_option($this->error_option, implode(' / ', $check['reasons']));
+            return;
+        }
+
+        // 既存ファイルは読み込み先を検証するだけで、内容不一致なら上書きしない。
+        if (!$this->generate_index_php($this->get_subdirectory())) {
+            update_option($this->error_option, esc_html__('Failed to create index.php in the domain root. Nothing was changed.', 'wpsetting-class-package'));
+            return;
+        }
+
+        // 既に運用中のサイトなので、HTTP確認の失敗を理由に入口を削除しない。
+        // 有効化処理の再実行による home / prev_home の上書きも避ける。
+        delete_option($this->error_option);
     }
 
     /** 検証しながら有効化する */
